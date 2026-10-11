@@ -1,0 +1,20 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "sans",
+        "createdAt": "2026-10-11T16:15:34.080Z",
+        "reason": "agent: false positive, detector splits the declared 'Cal Sans' family / generic sans-serif fallback, both in DESIGN.md typography"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-10-11T16:30:18.967Z",
+        "reason": "agent: Inter is the UI face declared in DESIGN.md typography, which the user's brief pinned ('use the existing design.md')"
+      }
+    ]
+  }
+}

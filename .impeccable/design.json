@@ -1,0 +1,524 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T16:34:07.718Z",
+  "title": "Design System: where2go",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Near-Black Ink",
+        "canonical": "oklch(17.8% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#636363",
+          "#868686",
+          "#a8a8a8",
+          "#cecece",
+          "#eeeeee"
+        ]
+      },
+      "primary-active": {
+        "role": "primary",
+        "displayName": "Pressed Ink",
+        "canonical": "oklch(26.0% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#636363",
+          "#868686",
+          "#a8a8a8",
+          "#cecece",
+          "#eeeeee"
+        ]
+      },
+      "primary-disabled": {
+        "role": "neutral",
+        "displayName": "Disabled Fill",
+        "canonical": "oklch(92.8% 0.006 265)",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#252629",
+          "#434548",
+          "#616367",
+          "#84868a",
+          "#a6a8ab",
+          "#ccced2",
+          "#eceef2"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Near-Black Ink",
+        "canonical": "oklch(17.8% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#636363",
+          "#868686",
+          "#a8a8a8",
+          "#cecece",
+          "#eeeeee"
+        ]
+      },
+      "body": {
+        "role": "neutral",
+        "displayName": "Body Slate",
+        "canonical": "oklch(37.3% 0.031 260)",
+        "tonalRamp": [
+          "#040b18",
+          "#1e2736",
+          "#3b4656",
+          "#596475",
+          "#7b8799",
+          "#9da9bb",
+          "#c2cfe2",
+          "#e5efff"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Slate",
+        "canonical": "oklch(55.1% 0.023 264)",
+        "tonalRamp": [
+          "#070b15",
+          "#212632",
+          "#3f4552",
+          "#5d6371",
+          "#7f8695",
+          "#a0a8b7",
+          "#c6cede",
+          "#e7efff"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(92.8% 0.006 265)",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#252629",
+          "#434548",
+          "#616367",
+          "#84868a",
+          "#a6a8ab",
+          "#ccced2",
+          "#eceef2"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Canvas White",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#636363",
+          "#868686",
+          "#a8a8a8",
+          "#cecece",
+          "#eeeeee"
+        ]
+      },
+      "surface-soft": {
+        "role": "neutral",
+        "displayName": "Soft Surface",
+        "canonical": "oklch(98.2% 0.002 248)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262627",
+          "#444546",
+          "#626364",
+          "#858687",
+          "#a7a8a9",
+          "#cdcecf",
+          "#edeeef"
+        ]
+      },
+      "surface-card": {
+        "role": "neutral",
+        "displayName": "Card Surface",
+        "canonical": "oklch(97.0% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#636363",
+          "#868686",
+          "#a8a8a8",
+          "#cecece",
+          "#eeeeee"
+        ]
+      },
+      "surface-dark": {
+        "role": "neutral",
+        "displayName": "Footer Black",
+        "canonical": "oklch(17.3% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#636363",
+          "#868686",
+          "#a8a8a8",
+          "#cecece",
+          "#eeeeee"
+        ]
+      },
+      "on-primary": {
+        "role": "neutral",
+        "displayName": "On Primary",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#636363",
+          "#868686",
+          "#a8a8a8",
+          "#cecece",
+          "#eeeeee"
+        ]
+      },
+      "on-dark": {
+        "role": "neutral",
+        "displayName": "On Dark",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#636363",
+          "#868686",
+          "#a8a8a8",
+          "#cecece",
+          "#eeeeee"
+        ]
+      },
+      "on-dark-soft": {
+        "role": "neutral",
+        "displayName": "Footer Gray",
+        "canonical": "oklch(71.2% 0.013 286)",
+        "tonalRamp": [
+          "#0b0a10",
+          "#26262d",
+          "#44444c",
+          "#62626b",
+          "#85858e",
+          "#a7a7b0",
+          "#cdcdd6",
+          "#ededf7"
+        ]
+      },
+      "success": {
+        "role": "secondary",
+        "displayName": "Room Green",
+        "canonical": "oklch(69.6% 0.149 162)",
+        "tonalRamp": [
+          "#001007",
+          "#002f1e",
+          "#005337",
+          "#107551",
+          "#039f6d",
+          "#2ac48b",
+          "#5fecb1",
+          "#c3ffe0"
+        ]
+      },
+      "warning": {
+        "role": "secondary",
+        "displayName": "Filling Amber",
+        "canonical": "oklch(76.9% 0.165 70)",
+        "tonalRamp": [
+          "#150800",
+          "#382000",
+          "#613b00",
+          "#88570c",
+          "#b87501",
+          "#e59309",
+          "#fec077",
+          "#feebd6"
+        ]
+      },
+      "error": {
+        "role": "secondary",
+        "displayName": "Full Red",
+        "canonical": "oklch(63.7% 0.208 25)",
+        "tonalRamp": [
+          "#200000",
+          "#4e0207",
+          "#840813",
+          "#ba0d1f",
+          "#e93e3f",
+          "#fd7a72",
+          "#fdbab4",
+          "#ffe9e6"
+        ]
+      },
+      "error-text": {
+        "role": "secondary",
+        "displayName": "Error Text Red",
+        "canonical": "oklch(50.5% 0.190 28)",
+        "tonalRamp": [
+          "#210000",
+          "#4f0103",
+          "#85060b",
+          "#b7191a",
+          "#e24940",
+          "#fe7a6d",
+          "#febab1",
+          "#ffe9e6"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display-xl": {
+        "displayName": "Display XL",
+        "purpose": "Seat count on the merchant screen. Cal Sans, tabular figures."
+      },
+      "display-md": {
+        "displayName": "Display MD",
+        "purpose": "Seat numeral leading every board row. Cal Sans, tabular figures."
+      },
+      "display-sm": {
+        "displayName": "Display SM",
+        "purpose": "Page h1 on merchant screens. Cal Sans."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "The where2go wordmark in top nav and footer. Cal Sans."
+      },
+      "title-md": {
+        "displayName": "Title MD",
+        "purpose": "Empty-state heading."
+      },
+      "title-sm": {
+        "displayName": "Title SM",
+        "purpose": "Cafe name on a board row; step-button label size."
+      },
+      "body-md": {
+        "displayName": "Body MD",
+        "purpose": "Default text and text-input value."
+      },
+      "body-sm": {
+        "displayName": "Body SM",
+        "purpose": "Notices, field errors, status and foot lines, footer copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form field labels."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Button and text-link-button labels."
+      },
+      "nav-link": {
+        "displayName": "Nav Link",
+        "purpose": "Top-nav link and sort tabs."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Column header and the /total beside a numeral; row meta uses the size at weight 400."
+      }
+    },
+    "shadows": [
+      {
+        "name": "subtle",
+        "value": "0 1px 2px rgba(0, 0, 0, 0.05)",
+        "purpose": "Under the active sort tab only, lifting the white pill off its gray track."
+      },
+      {
+        "name": "input-focus-ring",
+        "value": "0 0 0 1px #111111",
+        "purpose": "Paired with an ink border on a focused text input; drawn in error red (#ef4444) when the input is invalid."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The one easing curve; used by both the rank slide and the changed-row wash."
+      },
+      {
+        "name": "rank-slide",
+        "value": "450ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Signature interaction. When the ranking changes, each row animates translateY from its old position to its new one so a cafe is seen moving, not jumping. Disabled under prefers-reduced-motion."
+      },
+      {
+        "name": "changed-wash",
+        "value": "background-color 400ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "A row whose count changed fades to surface-card and back. The fade is disabled under prefers-reduced-motion; the wash itself still appears."
+      },
+      {
+        "name": "changed-hold",
+        "value": "30s",
+        "purpose": "How long a changed row keeps its surface-card wash and 'was N' in the meta line."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "md",
+        "value": "768px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one solid action per group: open a cafe, free a seat. Near-black, 44px tall; darkens on press, grays out when disabled.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Open cafe</button> <button class=\"ds-btn ds-btn-primary\" disabled>Open cafe</button>",
+      "css": ".ds-btn { height: 44px; padding: 0 20px; border: 1px solid transparent; border-radius: var(--rounded-md); display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); font: 600 0.875rem/1 var(--font-ui); white-space: nowrap; cursor: pointer; } .ds-btn:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; } .ds-btn:disabled { background: var(--color-primary-disabled); border-color: transparent; color: var(--color-muted); cursor: not-allowed; } .ds-btn-primary { background: var(--color-primary); color: var(--color-on-primary); } .ds-btn-primary:active { background: var(--color-primary-active); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Hairline-outlined white button for the alternative or lower-weight action (Clear search, Mark full, Set).",
+      "html": "<button class=\"ds-btn ds-btn-secondary\">Mark full</button> <button class=\"ds-btn ds-btn-secondary\" disabled>Mark all free</button>",
+      "css": ".ds-btn { height: 44px; padding: 0 20px; border: 1px solid transparent; border-radius: var(--rounded-md); display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); font: 600 0.875rem/1 var(--font-ui); white-space: nowrap; cursor: pointer; } .ds-btn:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; } .ds-btn:disabled { background: var(--color-primary-disabled); border-color: transparent; color: var(--color-muted); cursor: not-allowed; } .ds-btn-secondary { background: var(--color-canvas); border-color: var(--color-hairline); color: var(--color-ink); } .ds-btn-secondary:active { background: var(--color-surface-soft); }"
+    },
+    {
+      "name": "Text Link Button",
+      "kind": "button",
+      "refersTo": "button-text-link",
+      "description": "Underlined ink label with a 44px minimum height, for low-weight actions beside other content (Use my location, Switch cafe).",
+      "html": "<button class=\"ds-text-link\">Use my location</button>",
+      "css": ".ds-text-link { background: none; border: 0; min-height: 44px; padding: 0; font: 600 0.875rem/1 var(--font-ui); text-decoration: underline; text-underline-offset: 3px; color: var(--color-ink); white-space: nowrap; cursor: pointer; } .ds-text-link:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }"
+    },
+    {
+      "name": "Directions Icon Button",
+      "kind": "button",
+      "refersTo": "button-icon-circular",
+      "description": "36px hairline-ringed disc centred in a 44px hit area; trails every board row and opens directions.",
+      "html": "<a class=\"ds-icon-btn\" href=\"#\" aria-label=\"Directions to Kiln Coffee\"><span><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M3 13 13 3M6 3h7v7\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span></a>",
+      "css": ".ds-icon-btn { width: 44px; height: 44px; display: grid; place-items: center; border-radius: var(--rounded-pill); color: var(--color-ink); text-decoration: none; } .ds-icon-btn span { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--color-hairline); border-radius: var(--rounded-pill); background: var(--color-canvas); } .ds-icon-btn:active span { background: var(--color-surface-soft); } .ds-icon-btn:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "text-input",
+      "description": "44px field with hairline border. Focus swaps the border to ink with a 1px ring; invalid does the same in error red with an error-text message below.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-code\">Cafe code</label><input id=\"ds-code\" class=\"ds-input\" value=\"KILN9\" aria-invalid=\"true\" aria-describedby=\"ds-code-error\"><p class=\"ds-field-error\" id=\"ds-code-error\">That code doesn’t match a cafe. Check it and try again.</p></div><div class=\"ds-field\"><label class=\"ds-sr\" for=\"ds-search\">Search cafe or area</label><input id=\"ds-search\" class=\"ds-input\" type=\"search\" placeholder=\"Search cafe or area\"></div>",
+      "css": ".ds-field { margin-bottom: var(--space-lg); max-width: 360px; } .ds-field label { display: block; margin-bottom: var(--space-xs); font: 600 0.875rem/1.4 var(--font-ui); color: var(--color-ink); } .ds-input { width: 100%; height: 44px; padding: 0 14px; border: 1px solid var(--color-hairline); border-radius: var(--rounded-md); background: var(--color-canvas); color: var(--color-ink); font: 400 1rem/1.5 var(--font-ui); caret-color: var(--color-ink); } .ds-input::placeholder { color: var(--color-muted); opacity: 1; } .ds-input:focus-visible { outline: none; border-color: var(--color-ink); box-shadow: 0 0 0 1px var(--color-ink); } .ds-input[aria-invalid=true], .ds-input[aria-invalid=true]:focus-visible { border-color: var(--color-error); box-shadow: 0 0 0 1px var(--color-error); } .ds-field-error { margin: var(--space-xs) 0 0; color: var(--color-error-text); font: 400 0.875rem/1.5 var(--font-ui); } .ds-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }"
+    },
+    {
+      "name": "Sort Switch",
+      "kind": "nav",
+      "refersTo": "nav-pill-group",
+      "description": "Two-option pill switch (Most room / Nearest). 36px tabs on a soft track; the active tab is a white pill carrying the system's only shadow.",
+      "html": "<div class=\"ds-pill-group\" role=\"group\" aria-label=\"Sort cafes\"><button class=\"ds-tab\" aria-pressed=\"true\">Most room</button><button class=\"ds-tab\" aria-pressed=\"false\">Nearest</button></div>",
+      "css": ".ds-pill-group { display: inline-flex; padding: 4px; border-radius: var(--rounded-pill); background: var(--color-surface-soft); } .ds-tab { height: 36px; padding: 0 14px; border: 0; border-radius: var(--rounded-pill); background: transparent; color: var(--color-muted); font: 500 0.875rem/1 var(--font-ui); cursor: pointer; position: relative; } .ds-tab::after { content: ''; position: absolute; inset: -4px 0; } .ds-tab[aria-pressed=true] { background: var(--color-canvas); color: var(--color-ink); box-shadow: var(--shadow-subtle); } .ds-tab:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }"
+    },
+    {
+      "name": "Occupancy Board",
+      "kind": "custom",
+      "refersTo": "occupancy-row",
+      "description": "The signature surface: column header strip and ranked rows led by the free-seat numeral. Shows a normal row, a just-changed row (card wash and 'was N', held 30s after sliding to its new rank over 450ms), and dimmed rows for an unconfirmed count (hollow ring) and a full cafe.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-board-head\" aria-hidden=\"true\"><span>Seats free</span><span>Cafe</span><span></span></div><ol class=\"ds-rows\" aria-label=\"Cafes ranked by seats free\"><li class=\"ds-row\"><span class=\"ds-seat\">14<small><span aria-hidden=\"true\">/</span><span class=\"ds-sr\"> of </span>24<span class=\"ds-sr\"> seats free</span></small></span><div><div class=\"ds-cafe\"><span class=\"ds-dot\" data-level=\"roomy\"></span><span class=\"ds-sr\">Plenty of room.</span><span>Kiln Coffee</span></div><div class=\"ds-meta\">250 m · 2 min ago</div></div><a class=\"ds-icon-btn\" href=\"#\" aria-label=\"Directions to Kiln Coffee\"><span><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M3 13 13 3M6 3h7v7\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span></a></li><li class=\"ds-row\" data-changed=\"true\"><span class=\"ds-seat\">9<small><span aria-hidden=\"true\">/</span><span class=\"ds-sr\"> of </span>30<span class=\"ds-sr\"> seats free</span></small></span><div><div class=\"ds-cafe\"><span class=\"ds-dot\" data-level=\"filling\"></span><span class=\"ds-sr\">Filling up.</span><span>Harbour Roasters</span></div><div class=\"ds-meta\">400 m · <strong>just now, was 4</strong></div></div><a class=\"ds-icon-btn\" href=\"#\" aria-label=\"Directions to Harbour Roasters\"><span><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M3 13 13 3M6 3h7v7\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span></a></li><li class=\"ds-row\" data-dim=\"true\"><span class=\"ds-seat\">6<small><span aria-hidden=\"true\">/</span><span class=\"ds-sr\"> of </span>18<span class=\"ds-sr\"> seats free</span></small></span><div><div class=\"ds-cafe\"><span class=\"ds-dot\" data-level=\"unknown\"></span><span class=\"ds-sr\">Not confirmed recently.</span><span>Paper Lantern</span></div><div class=\"ds-meta\">650 m · 48 min ago · may be old</div></div><a class=\"ds-icon-btn\" href=\"#\" aria-label=\"Directions to Paper Lantern\"><span><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M3 13 13 3M6 3h7v7\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span></a></li><li class=\"ds-row\" data-dim=\"true\"><span class=\"ds-seat\">0<small><span aria-hidden=\"true\">/</span><span class=\"ds-sr\"> of </span>20<span class=\"ds-sr\"> seats free</span></small></span><div><div class=\"ds-cafe\"><span class=\"ds-dot\" data-level=\"full\"></span><span class=\"ds-sr\">Full.</span><span>Third Rail Espresso</span></div><div class=\"ds-meta\">900 m · 5 min ago</div></div><a class=\"ds-icon-btn\" href=\"#\" aria-label=\"Directions to Third Rail Espresso\"><span><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M3 13 13 3M6 3h7v7\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span></a></li></ol></div>",
+      "css": ".ds-board { max-width: 420px; color: var(--color-ink); font-family: var(--font-ui); } .ds-rows { margin: 0; padding: 0; list-style: none; } .ds-board-head, .ds-row { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; column-gap: var(--space-sm); align-items: center; padding: var(--space-xs) var(--space-md); border-top: 1px solid var(--color-hairline); } .ds-board-head { background: var(--color-surface-soft); color: var(--color-muted); font: 500 0.8125rem/1.4 var(--font-ui); } .ds-row { min-height: 64px; background: var(--color-canvas); transition: background-color 400ms var(--ease-out); } .ds-row[data-changed=true] { background: var(--color-surface-card); } .ds-rows > li:last-child { border-bottom: 1px solid var(--color-hairline); } .ds-seat { display: flex; align-items: baseline; gap: 3px; font: 600 2.25rem/1 var(--font-display); letter-spacing: -1px; font-variant-numeric: tabular-nums; } .ds-seat small { font: 500 0.8125rem/1 var(--font-ui); letter-spacing: 0; color: var(--color-muted); } .ds-row[data-dim=true] .ds-seat { color: var(--color-muted); } .ds-cafe { display: flex; align-items: center; gap: var(--space-xs); font: 600 1rem/1.4 var(--font-ui); } .ds-cafe span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .ds-meta { color: var(--color-muted); font-size: 0.8125rem; line-height: 1.4; } .ds-meta strong { color: var(--color-ink); font-weight: 600; } @media (prefers-reduced-motion: reduce) { .ds-row { transition: none; } } .ds-icon-btn { width: 44px; height: 44px; display: grid; place-items: center; border-radius: var(--rounded-pill); color: var(--color-ink); text-decoration: none; } .ds-icon-btn span { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--color-hairline); border-radius: var(--rounded-pill); background: var(--color-canvas); } .ds-icon-btn:active span { background: var(--color-surface-soft); } .ds-icon-btn:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; } .ds-dot { flex: none; width: 10px; height: 10px; border-radius: var(--rounded-pill); background: var(--color-error); } .ds-dot[data-level=roomy] { background: var(--color-success); } .ds-dot[data-level=filling] { background: var(--color-warning); } .ds-dot[data-level=unknown] { background: transparent; border: 2px solid var(--color-muted); } .ds-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }"
+    },
+    {
+      "name": "Seat Panel",
+      "kind": "card",
+      "refersTo": "seat-panel",
+      "description": "The merchant's whole job in one soft-gray panel: 4rem count, status line, 72px step pair, and quick-set pair.",
+      "html": "<section class=\"ds-panel\" aria-label=\"Seats free\"><div class=\"ds-panel-count\"><output>6</output><span>of 24 seats free</span></div><p class=\"ds-panel-status\"><span class=\"ds-dot\" data-level=\"filling\"></span>Filling up · updated just now</p><div class=\"ds-stepper\"><button class=\"ds-btn ds-btn-secondary\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 9h10\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg> Seat taken</button><button class=\"ds-btn ds-btn-primary\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 9h10M9 4v10\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg> Seat freed</button></div><div class=\"ds-quick\"><button class=\"ds-btn ds-btn-secondary\">Mark full</button><button class=\"ds-btn ds-btn-secondary\">Mark all free</button></div></section>",
+      "css": ".ds-panel { max-width: 420px; padding: var(--space-lg); border-radius: var(--rounded-lg); background: var(--color-surface-card); font-family: var(--font-ui); } .ds-panel-count { display: flex; align-items: baseline; gap: 10px; color: var(--color-body); } .ds-panel-count output { font: 600 4rem/1.05 var(--font-display); letter-spacing: -2px; font-variant-numeric: tabular-nums; color: var(--color-ink); } .ds-panel-status { display: flex; align-items: center; gap: var(--space-xs); margin: var(--space-xs) 0 0; color: var(--color-body); font-size: 0.875rem; min-height: 20px; } .ds-stepper, .ds-quick { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); } .ds-stepper { margin-top: var(--space-lg); } .ds-quick { margin-top: var(--space-sm); } .ds-btn { height: 44px; padding: 0 20px; border: 1px solid transparent; border-radius: var(--rounded-md); display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); font: 600 0.875rem/1 var(--font-ui); white-space: nowrap; cursor: pointer; } .ds-btn:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; } .ds-btn:disabled { background: var(--color-primary-disabled); border-color: transparent; color: var(--color-muted); cursor: not-allowed; } .ds-btn-primary { background: var(--color-primary); color: var(--color-on-primary); } .ds-btn-primary:active { background: var(--color-primary-active); } .ds-btn-secondary { background: var(--color-canvas); border-color: var(--color-hairline); color: var(--color-ink); } .ds-btn-secondary:active { background: var(--color-surface-soft); } .ds-stepper .ds-btn { height: 72px; padding: 0 var(--space-sm); font-size: 1rem; } .ds-dot { flex: none; width: 10px; height: 10px; border-radius: var(--rounded-pill); background: var(--color-error); } .ds-dot[data-level=roomy] { background: var(--color-success); } .ds-dot[data-level=filling] { background: var(--color-warning); } .ds-dot[data-level=unknown] { background: transparent; border: 2px solid var(--color-muted); }"
+    },
+    {
+      "name": "Top Nav",
+      "kind": "nav",
+      "refersTo": "top-nav",
+      "description": "56px bar (64px from 768px) with the Cal Sans wordmark and a single text link to the other surface.",
+      "html": "<header class=\"ds-top-nav\"><a href=\"#\" class=\"ds-wordmark\">where2go</a><a href=\"#\" class=\"ds-nav-link\">Cafe staff</a></header>",
+      "css": ".ds-top-nav { height: 56px; padding: 0 var(--space-md); display: flex; align-items: center; justify-content: space-between; background: var(--color-canvas); color: var(--color-ink); } .ds-wordmark { font: 600 1.375rem/1 var(--font-display); letter-spacing: -0.5px; color: inherit; text-decoration: none; } .ds-nav-link { font: 500 0.875rem/1.4 var(--font-ui); color: inherit; text-decoration: none; padding: var(--space-sm) 0; } .ds-top-nav a:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; } @media (min-width: 768px) { .ds-top-nav { height: 64px; } }"
+    },
+    {
+      "name": "Footer",
+      "kind": "custom",
+      "refersTo": "footer",
+      "description": "The only dark surface; closes every page with the white wordmark and one muted line.",
+      "html": "<footer class=\"ds-footer\"><div class=\"ds-footer-inner\"><span class=\"ds-footer-wordmark\">where2go</span><p>Demo data. The cafes listed here are fictional and their seat counts are for testing.</p></div></footer>",
+      "css": ".ds-footer { background: var(--color-surface-dark); color: var(--color-on-dark-soft); font: 400 0.875rem/1.5 var(--font-ui); } .ds-footer-inner { padding: var(--space-xl) var(--space-md); display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-sm) var(--space-lg); } .ds-footer-wordmark { font: 600 1.375rem/1 var(--font-display); letter-spacing: -0.5px; color: var(--color-on-dark); } .ds-footer p { margin: 0; max-width: 44ch; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Live Board",
+    "overview": "where2go reads like a departures board for cafe seats. Every line leads with the number of seats free, set large in Cal Sans with tabular figures, and everything else about the cafe sits beside it in quiet Inter. The canvas is white, ink and actions are near-black, rows are separated by hairlines, and the only chromatic colour on a screen is the small dot that says how full a cafe is.\n\nThe system is built for two people in a hurry: someone on the street choosing where to go, and someone behind a counter with seconds to spare. Density is compact on the board (eight rows in a 390px-wide first viewport) and generous on the merchant screen, where the two step buttons are the largest things after the count. Depth is flat. Tone changes, not shadows, separate the column header, the sort switch, the merchant panel, and a row that has just changed. The page always closes on the one dark surface, the footer.\n\nMotion exists to explain a change, never to decorate. When a cafe's count changes, its row slides to its new rank and stays marked with its previous value, so the reader sees what moved and from where.",
+    "keyCharacteristics": [
+      "The free-seat numeral is the first thing read on every line; the cafe name is second.",
+      "White canvas, near-black ink and actions, hairline rules, one dark footer.",
+      "Cal Sans for the wordmark, seat numerals, and page h1 only; Inter everywhere else.",
+      "Status hues live in a 10px dot and are always backed by a numeral and a text label.",
+      "Every count shows its age; an unconfirmed count goes muted with a hollow ring.",
+      "Flat surfaces; the single shadow in the system sits under the active sort tab.",
+      "Every control has a 44px hit area; press states only, no hover styling."
+    ],
+    "rules": [
+      {
+        "name": "The Occupancy-Only Rule",
+        "body": "Green, amber, and red mean how full a cafe is and nothing else. They appear as the 10px status dot; red additionally marks an invalid input. They are never button fills, backgrounds, badges, or decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never-Colour-Alone Rule",
+        "body": "A status dot is always accompanied by the seat numeral and a text label (\"Plenty of room\", \"Filling up\", \"Almost full\", \"Full\", \"Not confirmed recently\"), visible on the merchant screen and screen-reader-only on the board. An unconfirmed count changes shape, not hue: a hollow 2px muted ring.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Dark Surface Rule",
+        "body": "The footer is the only near-black surface. Above it, everything is white or a light gray tone.",
+        "section": "colors"
+      },
+      {
+        "name": "The Numeral Rule",
+        "body": "Cal Sans is for the wordmark, seat numerals, and page h1. Nothing else. Seat numerals always use tabular figures so a changing count does not shift the columns.",
+        "section": "typography"
+      },
+      {
+        "name": "The Weight 600 Rule",
+        "body": "Cal Sans is always weight 600 with negative tracking (-0.5px to -2px, growing with size). Never 700, never untracked.",
+        "section": "typography"
+      },
+      {
+        "name": "The 44 Rule",
+        "body": "Every interactive control has a hit area of at least 44px. Buttons and inputs are 44px tall. Where the visible shape is smaller (36px sort tabs, the 36px directions disc), the hit area is extended to 44px around it.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat Rule",
+        "body": "One shadow exists in the system and it belongs to the active sort tab. Rows, panels, buttons, and inputs never cast one.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do lead every list line with the free-seat numeral in Cal Sans 600, 2.25rem, tabular figures.",
+      "Do show the age of every count next to it, and switch to the hollow muted ring and a muted numeral once it is older than 30 minutes.",
+      "Do pair every status dot with a numeral and a text label, visible or screen-reader-only.",
+      "Do give every control a 44px hit area, extending it invisibly when the visible shape is 36px.",
+      "Do separate with 1px `hairline` rules and tone steps (`surface-soft`, `surface-card`) before reaching for a border box or shadow.",
+      "Do keep muted text on `canvas` or `surface-soft`, where it clears 4.5:1; use body colour or ink on `surface-card`.",
+      "Do write error copy in `error-text` and keep `error` for the dot and the invalid-input border.",
+      "Do keep text inputs at 1rem and buttons at 44px tall on every screen.",
+      "Do honour `prefers-reduced-motion` by removing the rank slide and the background fade while keeping the changed mark.",
+      "Do end every page with the dark footer."
+    ],
+    "donts": [
+      "Don't use Cal Sans for body copy, labels, buttons, cafe names, or empty-state headings; it is for the wordmark, seat numerals, and page h1.",
+      "Don't set Cal Sans at any weight other than 600 or without negative tracking.",
+      "Don't use green, amber, or red as a button fill, background, badge, or text colour; error copy uses `error-text`.",
+      "Don't let colour be the only carrier of occupancy.",
+      "Don't add hover styling; controls change on press, focus, and disabled only.",
+      "Don't add shadows to rows, panels, buttons, or inputs; the active sort tab owns the only one.",
+      "Don't put a dark surface anywhere but the footer.",
+      "Don't turn board rows into bordered or rounded cards; the board is hairline-ruled lines.",
+      "Don't animate anything that is not explaining a data change."
+    ]
+  }
+}
