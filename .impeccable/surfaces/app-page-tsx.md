@@ -10,7 +10,7 @@ related_targets: ["app/merchant/page.tsx"]
 Scope: `/` cafe finder and `/merchant` occupancy update. Mode: Operate. Phone-first web.
 
 - Audience and job: cafe-goer picking where to go now; cafe staff keeping the free-seat count current mid-service.
-- Task: read a ranked list of nearby cafes by seats free; merchant changes the count in one or two taps.
+- Task: read a ranked list of nearby cafes by seats free, optionally filtered by party size; merchant marks tables free or taken, one tap per table.
 - Content: synthetic demo cafes, labeled as demo data. No real businesses or claims.
 - Constraints: Next.js + SQLite, polling for live data, cafe code instead of accounts, no map.
 - Unresolved: hosted database, deploy target, real cafe data, merchant accounts.
@@ -23,7 +23,7 @@ OWN-WORLD: DESIGN.md unchanged in identity. White canvas, near-black ink and act
 
 STORY: The visitor sees which cafe has room, trusts it because each number shows its age, and goes. Staff open their cafe, tap minus or plus, and leave.
 
-FIRST VIEWPORT: 390 wide. 56px header with wordmark left, "Cafe staff" link right. Search input. Pill switch Most room / Nearest with the location label opposite. Column header strip. Then eight compact rows: 36px seat numeral with "/total" in a 72px column, cafe name over distance and age, trailing directions button. Primary action on the merchant screen is the plus/minus pair under a 64px count.
+FIRST VIEWPORT: 390 wide. 56px header with wordmark left, "Cafe staff" link right. Search input. Pill switch Most room / Nearest with the location label opposite. Column header strip. Then eight compact rows: 36px seat numeral with "/total" in a 72px column, cafe name over distance and age, trailing directions button. On the merchant screen the primary action is the grid of table tiles under a 64px derived count. (Revised after the build: tables replaced the seat stepper, a party filter row was added, and copy became Indonesian.)
 
 FORM: Ranked board, position 1 on the ordered list, dealt as an alternate and chosen by the user. Signature interaction: when a count changes, the row slides to its new rank in place and stays marked with its previous value. Seed key a1d92203.
 

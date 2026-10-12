@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
-import { getCafeByCode, normalizeCode } from "./cafes.ts";
-import type { Cafe } from "./occupancy.ts";
+import { getCafeByCode, normalizeCode, type MerchantCafe } from "./cafes.ts";
 
 export const SESSION_COOKIE = "where2go_cafe";
 
@@ -16,7 +15,7 @@ export async function sessionCode(): Promise<string> {
   return normalizeCode((await cookies()).get(SESSION_COOKIE)?.value);
 }
 
-export async function sessionCafe(): Promise<Cafe | null> {
+export async function sessionCafe(): Promise<MerchantCafe | null> {
   return getCafeByCode(await sessionCode());
 }
 

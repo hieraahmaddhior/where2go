@@ -1,20 +1,29 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type FormEvent } from "react";
-import { clampSeats, formatAge, level, LEVEL_LABEL, type Cafe } from "@/lib/occupancy";
+import { useEffect, useRef, useState } from "react";
+import { TableIcon } from "@/components/TableIcon";
+import type { MerchantCafe } from "@/lib/cafes";
+import { formatAge, formatClock, freeSeats, isOpen, isStale, level, LEVEL_LABEL } from "@/lib/occupancy";
 
 const SYNC_MS = 10000;
 
 type Status = "saved" | "saving" | "failed";
-type Change = { delta: number } | { freeSeats: number };
+type Change = { tableId: number; free: boolean } | { all: boolean } | { confirm: true };
 
-export function SeatUpdater({ initialCafe, initialNow }: { initialCafe: Cafe; initialNow: number }) {
+function apply(cafe: MerchantCafe, change: Change): MerchantCafe {
+  if ("confirm" in change) return cafe;
+  const tables = cafe.tables.map((t) =>
+    "all" in change ? { ...t, free: change.all } : t.id === change.tableId ? { ...t, free: change.free } : t,
+  );
+  return { ...cafe, tables, freeSizes: tables.filter((t) => t.free).map((t) => t.size) };
+}
+
+export function SeatUpdater({ initialCafe, initialNow }: { initialCafe: MerchantCafe; initialNow: number }) {
   const router = useRouter();
   const [cafe, setCafe] = useState(initialCafe);
   const [now, setNow] = useState(initialNow);
   const [status, setStatus] = useState<Status>("saved");
-  const [exact, setExact] = useState("");
   const pending = useRef(0);
 
   // Another device at the same counter may be updating too.
@@ -25,7 +34,7 @@ export function SeatUpdater({ initialCafe, initialNow }: { initialCafe: Cafe; in
         const response = await fetch("/api/merchant/cafe", { cache: "no-store" });
         if (response.status === 401) return router.refresh();
         if (!response.ok) return;
-        const data: { cafe: Cafe; now: number } = await response.json();
+        const data: { cafe: MerchantCafe; now: number } = await response.json();
         if (pending.current === 0) {
           setCafe(data.cafe);
           setNow(data.now);
@@ -37,8 +46,7 @@ export function SeatUpdater({ initialCafe, initialNow }: { initialCafe: Cafe; in
 
   async function change(next: Change) {
     const previous = cafe;
-    const target = "delta" in next ? cafe.freeSeats + next.delta : next.freeSeats;
-    setCafe({ ...cafe, freeSeats: clampSeats(target, cafe.totalSeats) });
+    setCafe(apply(cafe, next));
     setStatus("saving");
     pending.current += 1;
     try {
@@ -49,7 +57,7 @@ export function SeatUpdater({ initialCafe, initialNow }: { initialCafe: Cafe; in
       });
       if (response.status === 401) return router.refresh();
       if (!response.ok) throw new Error(String(response.status));
-      const data: { cafe: Cafe; now: number } = await response.json();
+      const data: { cafe: MerchantCafe; now: number } = await response.json();
       pending.current -= 1;
       if (pending.current === 0) {
         setCafe(data.cafe);
@@ -63,108 +71,101 @@ export function SeatUpdater({ initialCafe, initialNow }: { initialCafe: Cafe; in
     }
   }
 
-  function setExactCount(event: FormEvent) {
-    event.preventDefault();
-    change({ freeSeats: clampSeats(Number(exact), cafe.totalSeats) });
-    setExact("");
-  }
-
   async function switchCafe() {
     await fetch("/api/merchant/session", { method: "DELETE" }).catch(() => {});
     router.refresh();
   }
 
-  const state = level(cafe.freeSeats, cafe.totalSeats);
+  const freeTables = cafe.freeSizes.length;
+  const state = level(freeTables, cafe.totalTables);
+  const open = isOpen(cafe, now);
+  const hidden = open && isStale(cafe, now);
 
   return (
     <>
       <h1>{cafe.name}</h1>
-      <p className="merchant-sub">{cafe.area}</p>
+      <p className="merchant-sub">
+        {cafe.area} · buka {formatClock(cafe.opensMin)}–{formatClock(cafe.closesMin)}
+      </p>
 
-      <section className="seat-panel" aria-label="Seats free">
+      {hidden && (
+        <div className="callout" role="alert">
+          <p>
+            <strong>Kafe ini sedang tidak tampil untuk pelanggan.</strong> Status meja belum dikonfirmasi lebih dari 30
+            menit. Ubah meja yang berbeda, atau konfirmasi kalau semuanya masih sesuai.
+          </p>
+          <button className="button button-primary" onClick={() => change({ confirm: true })}>
+            Masih benar
+          </button>
+        </div>
+      )}
+      {!open && (
+        <div className="callout">
+          <p>
+            <strong>Di luar jam buka.</strong> Pelanggan melihat kafe ini sebagai tutup sampai{" "}
+            {formatClock(cafe.opensMin)}.
+          </p>
+        </div>
+      )}
+
+      <section className="seat-panel" aria-label="Meja kosong">
         <div className="seat-panel-count">
-          <output aria-live="polite">{cafe.freeSeats}</output>
-          <span>of {cafe.totalSeats} seats free</span>
+          <output aria-live="polite">{freeTables}</output>
+          <span>dari {cafe.totalTables} meja kosong</span>
         </div>
         <p className="seat-panel-status" role="status">
           {status === "failed" ? (
-            <span className="notice-error">Couldn’t save that change. Check your connection and tap again.</span>
+            <span className="notice-error">Perubahan itu gagal disimpan. Periksa koneksi lalu ketuk lagi.</span>
           ) : (
             <>
-              <span className="status-dot" data-level={state} />
-              {LEVEL_LABEL[state]} · {status === "saving" ? "saving…" : `updated ${formatAge(cafe.updatedAt, now)}`}
+              {LEVEL_LABEL[state]} · {freeTables > 0 && `±${freeSeats(cafe)} kursi · `}
+              {status === "saving" ? "menyimpan…" : `diperbarui ${formatAge(cafe.confirmedAt, now)}`}
             </>
           )}
         </p>
 
-        <div className="stepper">
-          <button
-            className="button button-secondary"
-            onClick={() => change({ delta: -1 })}
-            disabled={cafe.freeSeats <= 0}
-          >
-            <StepIcon minus /> Seat taken
-          </button>
-          <button
-            className="button button-primary"
-            onClick={() => change({ delta: 1 })}
-            disabled={cafe.freeSeats >= cafe.totalSeats}
-          >
-            <StepIcon /> Seat freed
-          </button>
-        </div>
+        <ul className="table-grid" aria-label="Meja">
+          {cafe.tables.map((table) => (
+            <li key={table.id}>
+              <button
+                className="table-tile"
+                aria-pressed={!table.free}
+                onClick={() => change({ tableId: table.id, free: !table.free })}
+              >
+                <span className="table-tile-name">Meja {table.label}</span>
+                <TableIcon seats={table.size} />
+                <span className="table-tile-meta">
+                  {table.size} kursi · {table.free ? "Kosong" : "Terisi"}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+
         <div className="quick-set">
           <button
             className="button button-secondary"
-            onClick={() => change({ freeSeats: 0 })}
-            disabled={cafe.freeSeats <= 0}
+            onClick={() => change({ all: false })}
+            disabled={freeTables === 0}
           >
-            Mark full
+            Tandai penuh
           </button>
           <button
             className="button button-secondary"
-            onClick={() => change({ freeSeats: cafe.totalSeats })}
-            disabled={cafe.freeSeats >= cafe.totalSeats}
+            onClick={() => change({ all: true })}
+            disabled={freeTables === cafe.tables.length}
           >
-            Mark all free
+            Tandai semua kosong
           </button>
         </div>
-        <form className="exact-set" onSubmit={setExactCount}>
-          <label htmlFor="exact-count">Set exact count</label>
-          <div>
-            <input
-              id="exact-count"
-              className="text-input"
-              type="number"
-              inputMode="numeric"
-              min={0}
-              max={cafe.totalSeats}
-              step={1}
-              placeholder={`0 to ${cafe.totalSeats}`}
-              value={exact}
-              onChange={(event) => setExact(event.target.value)}
-            />
-            <button className="button button-secondary" disabled={exact.trim() === ""}>
-              Set
-            </button>
-          </div>
-        </form>
       </section>
 
       <div className="merchant-foot">
-        <span>Customers see this count within seconds.</span>
+        <span>Pelanggan melihat perubahan dalam hitungan detik.</span>
         <button className="button-text-link" onClick={switchCafe}>
-          Switch cafe
+          Ganti kafe
         </button>
       </div>
     </>
-  );
-}
-
-function StepIcon({ minus = false }: { minus?: boolean }) {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <path d={minus ? "M4 9h10" : "M4 9h10M9 4v10"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
   );
 }

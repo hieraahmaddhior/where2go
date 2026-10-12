@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: where2go
-description: A phone-first live board of cafe seat counts. White canvas, near-black ink and actions, hairline-separated rows, Cal Sans seat numerals over Inter UI, and a single dark footer. Colour is spent only on the occupancy signal.
+description: A phone-first live board of cafe seat counts. White canvas, near-black ink and actions, hairline-separated rows, Cal Sans table numerals over Inter UI, and a single dark footer. The working palette is monochrome; red appears only for errors.
 
 colors:
   primary: "#111111"
@@ -18,8 +18,6 @@ colors:
   on-primary: "#ffffff"
   on-dark: "#ffffff"
   on-dark-soft: "#a1a1aa"
-  success: "#10b981"
-  warning: "#f59e0b"
   error: "#ef4444"
   error-text: "#b91c1c"
 
@@ -210,38 +208,30 @@ components:
   seat-count:
     textColor: "{colors.ink}"
     typography: "{typography.display-md}"
-    width: 76px
-  status-dot-roomy:
-    backgroundColor: "{colors.success}"
-    rounded: "{rounded.pill}"
-    size: 10px
-  status-dot-filling:
-    backgroundColor: "{colors.warning}"
-    rounded: "{rounded.pill}"
-    size: 10px
-  status-dot-tight-full:
-    backgroundColor: "{colors.error}"
-    rounded: "{rounded.pill}"
-    size: 10px
-  status-dot-unknown:
-    backgroundColor: transparent
-    textColor: "{colors.muted}"
-    rounded: "{rounded.pill}"
-    size: 10px
+    width: 96px
   seat-panel:
     backgroundColor: "{colors.surface-card}"
     textColor: "{colors.body}"
     typography: "{typography.display-xl}"
     rounded: "{rounded.lg}"
     padding: 24px
-  stepper:
-    typography: "{typography.title-sm}"
-    rounded: "{rounded.md}"
-    padding: 0 12px
-    height: 72px
-  exact-set:
+  table-tile:
+    backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
     typography: "{typography.label}"
+    rounded: "{rounded.md}"
+    padding: 12px
+    height: 64px
+  table-tile-taken:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.md}"
+  callout:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.body}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.lg}"
+    padding: 16px
   empty-state:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.body}"
@@ -266,7 +256,7 @@ components:
 
 **Creative North Star: "The Live Board"**
 
-where2go reads like a departures board for cafe seats. Every line leads with the number of seats free, set large in Cal Sans with tabular figures, and everything else about the cafe sits beside it in quiet Inter. The canvas is white, ink and actions are near-black, rows are separated by hairlines, and the only chromatic colour on a screen is the small dot that says how full a cafe is.
+where2go reads like a departures board for cafe seats. Every line leads with the number of seats free, set large in Cal Sans with tabular figures, and everything else about the cafe sits beside it in quiet Inter. The canvas is white, ink and actions are near-black, rows are separated by hairlines, and nothing on a working screen is chromatic: how full a cafe is, is said with numbers and words, not colour.
 
 The system is built for two people in a hurry: someone on the street choosing where to go, and someone behind a counter with seconds to spare. Density is compact on the board (eight rows in a 390px-wide first viewport) and generous on the merchant screen, where the two step buttons are the largest things after the count. Depth is flat. Tone changes, not shadows, separate the column header, the sort switch, the merchant panel, and a row that has just changed. The page always closes on the one dark surface, the footer.
 
@@ -276,39 +266,38 @@ Motion exists to explain a change, never to decorate. When a cafe's count change
 - The free-seat numeral is the first thing read on every line; the cafe name is second.
 - White canvas, near-black ink and actions, hairline rules, one dark footer.
 - Cal Sans for the wordmark, seat numerals, and page h1 only; Inter everywhere else.
-- Status hues live in a 10px dot and are always backed by a numeral and a text label.
-- Every count shows its age; an unconfirmed count goes muted with a hollow ring.
+- No status colours: occupancy is carried by the numeral, its "/total", and words ("Penuh", "Tutup").
+- Every count shows its age; an open cafe whose tables nobody confirmed in 30 minutes is left off the board.
+- Interface copy is Indonesian, neutral in voice; table and seat counts never change meaning between views.
 - Flat surfaces; the single shadow in the system sits under the active sort tab.
 - Every control has a 44px hit area; press states only, no hover styling.
 
 ## Colors
 
-A monochrome working palette with three status hues that are rationed to the occupancy signal.
+A monochrome working palette. The only chromatic colour is red, reserved for errors.
 
 ### Primary
 - **Near-Black Ink** (`primary`, `ink`, #111111): Primary buttons, all headings and seat numerals, focus outlines, the text selection fill, and the focused input border. `primary-active` (#242424) is the pressed state of the primary button.
 
 ### Secondary
-- **Room Green** (`success`, #10b981): Occupancy dot when 40% or more of seats are free ("Plenty of room").
-- **Filling Amber** (`warning`, #f59e0b): Occupancy dot when 15% to under 40% of seats are free ("Filling up").
-- **Full Red** (`error`, #ef4444): Occupancy dot when under 15% of seats are free or none are ("Almost full", "Full"). Also the border and 1px ring of an invalid input.
+- **Error Red** (`error`, #ef4444): The border and 1px ring of an invalid input. Error copy uses `error-text` (#b91c1c) for contrast.
 - **Error Text Red** (`error-text`, #b91c1c): Error copy only: field errors, the offline notice, a failed save. It is the darker red because `error` is too light to carry text on white.
 
 ### Neutral
 - **Canvas White** (`canvas`, `on-primary`, `on-dark`, #ffffff): Page floor, row background, input and secondary-button fill, active sort tab, and text on near-black surfaces.
 - **Body Slate** (`body`, #374151): Running text: page sub-lines, notices, empty-state copy, the merchant status line.
-- **Muted Slate** (`muted`, #6b7280): Secondary text: column header labels, distance and age, the "/total" beside a seat numeral, placeholders, inactive sort tab, disabled button labels, and the hollow ring of an unconfirmed dot. A dimmed seat numeral also takes this colour.
+- **Muted Slate** (`muted`, #6b7280): Secondary text: column header labels, distance and age, the "/total" beside a seat numeral, placeholders, inactive sort tab, disabled button labels. A dimmed table numeral (full or closed cafe) also takes this colour.
 - **Hairline** (`hairline`, `primary-disabled`, #e5e7eb): 1px rules between board rows, input and secondary-button borders, the icon-button ring, and the fill of any disabled button.
 - **Soft Surface** (`surface-soft`, #f8f9fa): Column header strip, sort-switch track, pressed state of secondary and icon buttons.
 - **Card Surface** (`surface-card`, #f5f5f5): The merchant seat panel, and the wash on a board row whose count just changed.
 - **Footer Black** (`surface-dark`, #101010) with **Footer Gray** text (`on-dark-soft`, #a1a1aa): The footer, the only dark surface.
 
 ### Named Rules
-**The Occupancy-Only Rule.** Green, amber, and red mean how full a cafe is and nothing else. They appear as the 10px status dot; red additionally marks an invalid input. They are never button fills, backgrounds, badges, or decoration.
+**The No-Status-Colour Rule.** Occupancy is never colour-coded. A traffic-light dot was built and removed: it repeated what "5/8" already says, its thresholds flipped on one table, and it contradicted a board sorted by absolute count. Red is for errors only.
 
-**The Never-Colour-Alone Rule.** A status dot is always accompanied by the seat numeral and a text label ("Plenty of room", "Filling up", "Almost full", "Full", "Not confirmed recently"), visible on the merchant screen and screen-reader-only on the board. An unconfirmed count changes shape, not hue: a hollow 2px muted ring.
+**The Words-and-Numbers Rule.** Every state a reader needs is written: the free-table numeral with its total, "Penuh" for a full cafe, "Tutup · buka HH.MM" for a closed one, and the level word ("Lega", "Mulai ramai", "Hampir penuh", "Penuh") on the merchant status line. Muted ink reinforces full and closed; it never carries them alone.
 
-**The One Dark Surface Rule.** The footer is the only near-black surface. Above it, everything is white or a light gray tone.
+**The One Dark Surface Rule.** The footer is the only near-black surface. Above it, everything is white or a light gray tone. The one exception is a pressed control: the primary button and a taken table tile fill with `primary` ink.
 
 ## Typography
 
@@ -342,9 +331,9 @@ A single centred column. The finder column is capped at 720px and the merchant c
 
 Spacing is a 4px-based scale (4, 8, 12, 16, 24, 32, 48). Controls inside a group sit 12px apart; groups on the merchant screen sit 24px apart; the footer is pushed 48px below content.
 
-The board is a three-column grid shared by the column header and every row: a 76px seat-numeral column, a flexible cafe column that truncates the name with an ellipsis, and a trailing directions button, with 12px gaps. Rows are at least 64px tall with 8px block padding, each topped by a hairline; the last row also closes with one. The column header and rows are full width of the column, not inset cards.
+The board is a three-column grid shared by the column header and every row: a 96px table-numeral column, a flexible cafe column that truncates the name with an ellipsis, and a trailing directions button, with 12px gaps. Rows are at least 64px tall with 8px block padding, each topped by a hairline; the last row also closes with one. The column header and rows are full width of the column, not inset cards.
 
-On the merchant screen the step pair and the quick-set pair are two equal columns with a 12px gap; the exact-count row is a flexible input with an auto-width button.
+On the merchant screen the table tiles sit in an auto-fill grid (124px minimum per tile, 8px gap), so a phone shows two columns and wider screens three; the quick-set pair below is two equal columns.
 
 ### Named Rules
 **The 44 Rule.** Every interactive control has a hit area of at least 44px. Buttons and inputs are 44px tall. Where the visible shape is smaller (36px sort tabs, the 36px directions disc), the hit area is extended to 44px around it.
@@ -363,7 +352,7 @@ Focus is drawn, not lifted: a 2px ink outline offset 2px on every focusable elem
 
 ## Shapes
 
-Soft, small radii in three steps. Buttons and inputs are gently rounded (8px). The merchant seat panel is the one rounded container (12px). Pills (9999px) are used for the sort switch and its tabs, the directions disc, and status dots. Board rows and the column header are square-edged and divided by 1px hairlines. Borders are always 1px `hairline`, except the unconfirmed dot's 2px muted ring.
+Soft, small radii in three steps. Buttons and inputs are gently rounded (8px). The merchant seat panel is the one rounded container (12px). Pills (9999px) are used for the sort switch and its tabs, and the directions disc. Board rows and the column header are square-edged and divided by 1px hairlines. Borders are always 1px `hairline`, except the unconfirmed dot's 2px muted ring.
 
 Icons are inline SVG line drawings in `currentColor` with round caps: a 16px arrow at 1.5px stroke for directions, 18px plus and minus at 2px stroke on the step buttons.
 
@@ -388,24 +377,32 @@ Controls are plain and tactile: solid near-black or hairline-outlined white, fix
 - **Focus:** Border turns ink plus a 1px ink ring; no outline.
 - **Invalid:** Border and ring turn `error`, and a Body SM message in `error-text` sits 8px below, linked with `aria-describedby`.
 
-### Sort Switch (nav-pill-group, category-tab)
-- **Style:** A `surface-soft` pill track with 4px padding holding two pill tabs, 36px tall with 14px side padding, Nav Link type, muted label. The track makes the group 44px tall and each tab's hit area reaches that edge.
+### Sort Switch and Party Filter (nav-pill-group, category-tab)
+- **Style:** A `surface-soft` pill track with 4px padding holding pill tabs, 36px tall with 14px side padding, Nav Link type, muted label. The track makes the group 44px tall and each tab's hit area reaches that edge. The same component serves the sort switch ("Paling lega", "Terdekat") and the party filter ("Semua", "1–2", "3–4", "5+"), which sits on its own row with a Body SM label ("Jumlah orang") opposite.
 - **Active:** Canvas fill, ink label, the Subtle shadow. State is exposed with `aria-pressed`.
 
-### Board (board-head, occupancy-row, seat-count, status-dot)
-- **Column header:** A `surface-soft` strip in muted Caption type ("Seats free", "Cafe"), hidden from assistive tech; the list itself is labelled.
-- **Row:** Seat numeral in Display MD with a muted Caption "/total" on the same baseline; then a status dot, the cafe name in Title SM (truncated), and a muted meta line of distance or area, a middle dot, and the count's age; then the directions disc.
-- **Status dot:** 10px circle. Green at 40% or more free, amber at 15% or more, red below that or at zero. Hollow 2px muted ring when the count has not been confirmed in 30 minutes; the meta line then adds "may be old".
-- **Dim:** When a cafe is full or its count is unconfirmed, the seat numeral drops to muted so confirmed room stands out.
-- **Changed (signature):** When a polled count differs from the last one, the row slides to its new rank (450ms, cubic-bezier(0.16, 1, 0.3, 1)), its background washes to `surface-card` (400ms, same curve), and the age reads "{age}, was N" in ink at weight 600. The mark clears after 30 seconds. Under `prefers-reduced-motion` the slide and the fade are both off; the wash and "was N" still appear.
+### Board (board-head, occupancy-row, seat-count)
+- **Column header:** A `surface-soft` strip in muted Caption type ("Meja kosong", "Kafe"), one line, with a 12px-tall table glyph before the first label so the numerals below read as tables, hidden from assistive tech; the list itself is labelled.
+- **Row link:** The cafe name is a link to the cafe detail page and its hit area covers the whole row; the directions disc sits above it and keeps its own target. Pressing the row washes it to `surface-soft`.
+- **Row:** Free-table numeral in Display MD with a muted Caption "/total tables" on the same baseline; then the cafe name in Title SM (truncated) over a muted meta line of three facts (distance or area, estimated free seats as "±N kursi", age of the count); then the directions disc. Each fact stays on one line and carries a trailing middle dot, so a long meta line breaks between facts, never inside one. With a party chosen, the middle fact reads "N meja cocok" (tables that party fits) in place of the seat estimate; the numeral stays free tables.
+- **Dim and closed:** A full cafe's numeral drops to muted so room stands out. A closed cafe sits below every open one with an en dash for a numeral, a muted name, and "Tutup · buka HH.MM"; it never shows a count. An open cafe whose tables were not confirmed in 30 minutes is not rendered at all.
+- **Changed (signature):** When a polled count differs from the last one, the row slides to its new rank (450ms, cubic-bezier(0.16, 1, 0.3, 1)), its background washes to `surface-card` (400ms, same curve), and the meta line shrinks to the place and the event in ink at weight 600: "+N meja kosong" or "N meja terisi". The mark clears after 30 seconds. Under `prefers-reduced-motion` the slide and the fade are both off; the wash and the event text still appear.
 
-### Seat Panel (seat-panel, stepper, exact-set)
+### Seat Panel (seat-panel, table-tile, callout)
 - **Container:** `surface-card` fill, 12px radius, 24px padding, no border or shadow.
-- **Count:** Display XL numeral with "of N seats free" in body colour on its baseline; announced politely when it changes.
-- **Status line:** Status dot, level label, a middle dot, and "saving…" or "updated {age}" in Body SM. A failed save replaces the line with `error-text` copy and the count rolls back.
-- **Stepper:** Two equal 72px-tall buttons with 1rem labels and an 18px icon: secondary "Seat taken" (minus) at left, primary "Seat freed" (plus) at right. Each disables at its bound.
-- **Quick set:** Two equal 44px secondary buttons, "Mark full" and "Mark all free".
-- **Exact set:** Label, a numeric text input, and a secondary "Set" button that is disabled while the input is empty.
+- **Count:** Display XL numeral of free tables with "dari N meja kosong" in body colour on its baseline; announced politely when it changes.
+- **Status line:** Level word, the seat estimate ("±N kursi"), and "menyimpan…" or "diperbarui {age}" in Body SM, separated by middle dots. A failed save replaces the line with `error-text` copy and the tiles roll back.
+- **Table tile:** One toggle button per table, at least 64px tall, 8px radius, 12px padding. Label type for "Meja N" with a 24px-tall table glyph opposite, over a Caption line "{size} kursi · Kosong|Terisi". The glyph is a top-down table with one chair mark per seat along its long sides, so its width grows with the table; it is drawn in `currentColor` at a 1.5px round stroke and is decorative, the size is always written beside it. Free is canvas with a hairline border and a muted second line; taken (`aria-pressed`) fills with `primary`, text turns `on-primary` and the second line `on-dark-soft`. Pressing darkens either state one step. The words Kosong and Terisi carry the state; the fill only reinforces it.
+- **Quick set:** Two equal 44px secondary buttons, "Tandai penuh" and "Tandai semua kosong", each disabled when already true.
+- **Callout:** Sits above the panel when the merchant must know something first: the cafe is hidden from customers (unconfirmed for 30 minutes) or is outside opening hours. Canvas fill, 1px ink border, 12px radius, 16px padding, Body SM text with an ink lead sentence at weight 600. The hidden variant carries a full-width primary button, "Masih benar", that confirms the layout without changing a table.
+
+### Cafe Detail (detail-section, fact-list, plain-list, placeholder)
+- **Head:** Page h1 in Display SM, a Body MD line of distance or area and open status, then one primary button, "Petunjuk arah".
+- **Sections:** Stacked 32px apart, each with a Title MD heading 12px above its content. No cards; sections are separated by space only.
+- **Count:** Display XL free-table numeral with "dari N meja · ±N kursi" on its baseline and a muted Body SM line "Dikonfirmasi staf {age}." below. When the cafe is closed or unconfirmed, a notice replaces the count and both fact lists.
+- **Fact list:** Label left in Body SM body colour, value right-aligned in Body SM at weight 500, a hairline above every row and below the last. On the detail page one list shows at a time, chosen with the pill switch ("Per ukuran meja", "Per area") 24px above it; size is the default. Each size row leads with the table glyph for that size in a fixed 28px slot and states free and taken side by side ("2 kosong · 1 terisi", "3 kosong", "Penuh"), never "N dari N". "Per area" is an accordion, one hairline-ruled row per zone, all closed at first. Closed, a row is 52px tall with the zone name in Title SM, its free-table total ("4 meja kosong", or a muted "Penuh") right-aligned, and a chevron. Open, the total hides, the chevron turns over (200ms), and the body shows that zone's floor plan above its size list. A "Penuh" value drops to muted.
+- **Plain list:** Unmarked Body MD items, 8px apart, one column on a phone and two from 768px. No bullets, icons, or chips.
+- **Placeholder:** Reserved space for content that does not exist yet (a floor plan inside each open zone, photos). `surface-soft` fill, 1px dashed muted border, 12px radius, centred Body SM sentence that says what is missing. Photos reserve 16:9 for the storefront and 4:3 per zone. Never filled with stock imagery.
 
 ### Empty State and Notices
 - **Empty state:** 48px block padding under a hairline, left-aligned. Title MD heading in ink, Body MD sentence in body colour, and when there is a way out, a secondary button 16px below. No illustration or icon.
@@ -418,12 +415,13 @@ Controls are plain and tactile: solid near-black or hairline-outlined white, fix
 
 ### Do:
 - **Do** lead every list line with the free-seat numeral in Cal Sans 600, 2.25rem, tabular figures.
-- **Do** show the age of every count next to it, and switch to the hollow muted ring and a muted numeral once it is older than 30 minutes.
-- **Do** pair every status dot with a numeral and a text label, visible or screen-reader-only.
+- **Do** show the age of every count next to it, and leave an open cafe off the board once its tables have gone 30 minutes unconfirmed.
+- **Do** tell the merchant, above everything else on their screen, when their cafe is hidden or closed.
+- **Do** state occupancy in numbers and words; reach for muted ink, not a hue, to set full and closed cafes back.
 - **Do** give every control a 44px hit area, extending it invisibly when the visible shape is 36px.
 - **Do** separate with 1px `hairline` rules and tone steps (`surface-soft`, `surface-card`) before reaching for a border box or shadow.
 - **Do** keep muted text on `canvas` or `surface-soft`, where it clears 4.5:1; use body colour or ink on `surface-card`.
-- **Do** write error copy in `error-text` and keep `error` for the dot and the invalid-input border.
+- **Do** write error copy in `error-text` and keep `error` for the invalid-input border.
 - **Do** keep text inputs at 1rem and buttons at 44px tall on every screen.
 - **Do** honour `prefers-reduced-motion` by removing the rank slide and the background fade while keeping the changed mark.
 - **Do** end every page with the dark footer.
@@ -431,10 +429,11 @@ Controls are plain and tactile: solid near-black or hairline-outlined white, fix
 ### Don't:
 - **Don't** use Cal Sans for body copy, labels, buttons, cafe names, or empty-state headings; it is for the wordmark, seat numerals, and page h1.
 - **Don't** set Cal Sans at any weight other than 600 or without negative tracking.
-- **Don't** use green, amber, or red as a button fill, background, badge, or text colour; error copy uses `error-text`.
-- **Don't** let colour be the only carrier of occupancy.
+- **Don't** colour-code occupancy with green, amber, or red dots, fills, badges, or text; red is for errors, and error copy uses `error-text`.
 - **Don't** add hover styling; controls change on press, focus, and disabled only.
 - **Don't** add shadows to rows, panels, buttons, or inputs; the active sort tab owns the only one.
-- **Don't** put a dark surface anywhere but the footer.
+- **Don't** put a dark surface anywhere but the footer; a taken table tile and the primary button are pressed controls, not surfaces.
+- **Don't** let the seat numeral change meaning when a filter is on; filters change which cafes show and what the meta line says.
 - **Don't** turn board rows into bordered or rounded cards; the board is hairline-ruled lines.
 - **Don't** animate anything that is not explaining a data change.
+- **Don't** repeat an icon down the board rows; the table glyph appears once in the column header and once per merchant tile, where its shape differs per table.

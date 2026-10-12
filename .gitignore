@@ -9,3 +9,4 @@ data/*.db*
 .impeccable/decision-payload.json
 .impeccable/config.local.json
 .env*.local
+data/demo-codes.txt

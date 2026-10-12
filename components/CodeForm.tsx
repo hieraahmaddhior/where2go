@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 const ERRORS: Record<number, string> = {
-  401: "That code doesn’t match a cafe. Check it and try again.",
-  429: "Too many tries. Wait a few minutes, then try again.",
+  401: "Kode itu tidak cocok dengan kafe mana pun. Periksa lalu coba lagi.",
+  429: "Terlalu banyak percobaan. Tunggu beberapa menit, lalu coba lagi.",
 };
 
 export function CodeForm() {
@@ -25,19 +25,19 @@ export function CodeForm() {
         body: JSON.stringify({ code }),
       });
       if (response.ok) return router.refresh();
-      setError(ERRORS[response.status] ?? "Couldn’t open the cafe. Try again.");
+      setError(ERRORS[response.status] ?? "Kafe tidak bisa dibuka. Coba lagi.");
     } catch {
-      setError("Couldn’t reach where2go. Check your connection and try again.");
+      setError("Tidak bisa terhubung ke where2go. Periksa koneksi lalu coba lagi.");
     }
     setBusy(false);
   }
 
   return (
     <form onSubmit={submit}>
-      <h1>Update your cafe’s seats</h1>
-      <p className="merchant-sub">Enter the code for your cafe to change how many seats are free.</p>
+      <h1>Perbarui meja kafe</h1>
+      <p className="merchant-sub">Masukkan kode kafe untuk mengubah meja yang kosong.</p>
       <div className="field">
-        <label htmlFor="cafe-code">Cafe code</label>
+        <label htmlFor="cafe-code">Kode kafe</label>
         <input
           id="cafe-code"
           className="text-input"
@@ -57,7 +57,7 @@ export function CodeForm() {
           </p>
         )}
         <button className="button button-primary" disabled={busy || !code.trim()}>
-          {busy ? "Opening…" : "Open cafe"}
+          {busy ? "Membuka…" : "Buka kafe"}
         </button>
       </div>
     </form>

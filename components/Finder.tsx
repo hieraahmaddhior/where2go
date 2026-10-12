@@ -1,14 +1,18 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { TableIcon } from "@/components/TableIcon";
 import {
   formatAge,
+  formatClock,
   formatDistance,
-  level,
-  LEVEL_LABEL,
+  PARTIES,
+  PARTY_LABEL,
   rankCafes,
   type Cafe,
   type Coords,
+  type Party,
   type RankedCafe,
   type Sort,
 } from "@/lib/occupancy";
@@ -25,6 +29,7 @@ export function Finder({ initialCafes, initialNow }: { initialCafes: Cafe[]; ini
   const [offline, setOffline] = useState(false);
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<Sort>("room");
+  const [party, setParty] = useState<Party>("all");
   const [origin, setOrigin] = useState<Coords | null>(null);
   const [location, setLocation] = useState<LocationState>("idle");
   const [changes, setChanges] = useState<Record<number, Change>>({});
@@ -40,11 +45,11 @@ export function Finder({ initialCafes, initialNow }: { initialCafes: Cafe[]; ini
         const data: { cafes: Cafe[]; now: number } = await response.json();
         if (cancelled) return;
 
-        const before = new Map(previous.current.map((c) => [c.id, c.freeSeats]));
+        const before = new Map(previous.current.map((c) => [c.id, c.freeSizes.length]));
         const fresh: Record<number, Change> = {};
         for (const cafe of data.cafes) {
           const was = before.get(cafe.id);
-          if (was !== undefined && was !== cafe.freeSeats) fresh[cafe.id] = { was, at: data.now };
+          if (was !== undefined && was !== cafe.freeSizes.length) fresh[cafe.id] = { was, at: data.now };
         }
         previous.current = data.cafes;
         setCafes(data.cafes);
@@ -88,7 +93,10 @@ export function Finder({ initialCafes, initialNow }: { initialCafes: Cafe[]; ini
       .catch(() => {});
   }, []);
 
-  const ranked = useMemo(() => rankCafes(cafes, { sort, origin, query, now }), [cafes, sort, origin, query, now]);
+  const ranked = useMemo(
+    () => rankCafes(cafes, { sort, origin, query, party, now }),
+    [cafes, sort, origin, query, party, now],
+  );
   const listRef = useRankMotion(ranked.map((c) => c.id).join(","));
 
   function chooseSort(next: Sort) {
@@ -101,52 +109,71 @@ export function Finder({ initialCafes, initialNow }: { initialCafes: Cafe[]; ini
   return (
     <main className="page">
       <div className="finder-controls">
-        <h1 className="sr-only">Cafes with seats free now</h1>
+        <h1 className="sr-only">Kafe dengan meja kosong sekarang</h1>
         <label className="sr-only" htmlFor="cafe-search">
-          Search cafe or area
+          Cari kafe atau daerah
         </label>
         <input
           id="cafe-search"
           className="text-input"
           type="search"
-          placeholder="Search cafe or area"
+          placeholder="Cari kafe atau daerah"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           autoComplete="off"
           enterKeyHint="search"
         />
         <div className="finder-bar">
-          <div className="nav-pill-group" role="group" aria-label="Sort cafes">
+          <div className="nav-pill-group" role="group" aria-label="Urutkan kafe">
             <button className="category-tab" aria-pressed={sort === "room"} onClick={() => chooseSort("room")}>
-              Most room
+              Paling lega
             </button>
             <button className="category-tab" aria-pressed={sort === "nearest"} onClick={() => chooseSort("nearest")}>
-              Nearest
+              Terdekat
             </button>
           </div>
           {location === "granted" ? (
-            <span className="location-label">Near you</span>
+            <span className="location-label">Dari lokasi saat ini</span>
           ) : location === "asking" ? (
-            <span className="location-label">Finding you…</span>
+            <span className="location-label">Mencari lokasi…</span>
           ) : (
             <button className="button-text-link" onClick={locate}>
-              Use my location
+              Pakai lokasi
             </button>
           )}
+        </div>
+        <div className="finder-bar">
+          <span className="filter-label" id="party-label">
+            Jumlah orang
+          </span>
+          <div className="nav-pill-group" role="group" aria-labelledby="party-label">
+            {PARTIES.map((option) => (
+              <button
+                key={option}
+                className="category-tab"
+                aria-pressed={party === option}
+                onClick={() => setParty(option)}
+              >
+                {PARTY_LABEL[option]}
+              </button>
+            ))}
+          </div>
         </div>
         <div aria-live="polite">
           {location === "denied" && (
             <p className="notice">
-              Location is blocked for this site, so distances are hidden
-              {nearestBlocked ? " and the list stays sorted by most room" : ""}. Allow it in your browser settings to
-              sort by nearest.
+              Akses lokasi diblokir untuk situs ini, jadi jarak tidak ditampilkan
+              {nearestBlocked ? " dan daftar tetap diurutkan dari yang paling lega" : ""}. Izinkan lewat pengaturan
+              browser untuk mengurutkan dari yang terdekat.
             </p>
           )}
           {location === "unavailable" && (
-            <p className="notice">Couldn’t get your location. Distances are hidden until it works.</p>
+            <p className="notice">Lokasi tidak terbaca. Jarak disembunyikan sampai berhasil.</p>
           )}
           {offline && (
-            <p className="notice notice-error">Can’t reach where2go. Counts below may be old. Retrying…</p>
+            <p className="notice notice-error">
+              Tidak bisa terhubung ke where2go. Angka di bawah mungkin sudah lama. Mencoba lagi…
+            </p>
           )}
         </div>
       </div>
@@ -154,87 +181,145 @@ export function Finder({ initialCafes, initialNow }: { initialCafes: Cafe[]; ini
       {ranked.length > 0 ? (
         <>
           <div className="board-head" aria-hidden="true">
-            <span>Seats free</span>
-            <span>Cafe</span>
+            <span className="board-head-count">
+              <TableIcon seats={4} height={12} />
+              Meja kosong
+            </span>
+            <span>Kafe</span>
             <span />
           </div>
-          <ol className="board" ref={listRef} aria-label="Cafes ranked by seats free">
+          <ol className="board" ref={listRef} aria-label="Kafe diurutkan dari meja kosong terbanyak">
             {ranked.map((cafe) => (
-              <CafeRow key={cafe.id} cafe={cafe} now={now} change={changes[cafe.id]} />
+              <CafeRow key={cafe.id} cafe={cafe} now={now} party={party} change={changes[cafe.id]} />
             ))}
           </ol>
         </>
-      ) : cafes.length === 0 ? (
+      ) : query.trim() ? (
         <div className="empty-state">
-          <h2>No cafes listed yet</h2>
-          <p>Cafes appear here once their staff start reporting free seats.</p>
+          <h2>Tidak ada kafe yang cocok dengan “{query.trim()}”</h2>
+          <p>Pencarian mencakup nama kafe dan daerah. Coba kata yang lebih pendek, atau hapus pencarian.</p>
+          <button className="button button-secondary" onClick={() => setQuery("")}>
+            Hapus pencarian
+          </button>
+        </div>
+      ) : party !== "all" ? (
+        <div className="empty-state">
+          <h2>Belum ada meja untuk {PARTY_LABEL[party]} orang</h2>
+          <p>Saat ini tidak ada kafe buka dengan meja kosong seukuran itu. Daftar diperbarui otomatis.</p>
+          <button className="button button-secondary" onClick={() => setParty("all")}>
+            Tampilkan semua ukuran
+          </button>
         </div>
       ) : (
         <div className="empty-state">
-          <h2>No cafe matches “{query.trim()}”</h2>
-          <p>Search looks at cafe names and areas. Try a shorter word, or clear it to see every cafe.</p>
-          <button className="button button-secondary" onClick={() => setQuery("")}>
-            Clear search
-          </button>
+          <h2>Belum ada kafe yang bisa ditampilkan</h2>
+          <p>Kafe muncul di sini setelah stafnya mengonfirmasi meja yang kosong.</p>
         </div>
       )}
     </main>
   );
 }
 
-function CafeRow({ cafe, now, change }: { cafe: RankedCafe; now: number; change?: Change }) {
-  const state = level(cafe.freeSeats, cafe.totalSeats);
-  const marked = change !== undefined && now - change.at < CHANGE_MARK_MS;
-  const age = formatAge(cafe.updatedAt, now);
+function CafeRow({
+  cafe,
+  now,
+  party,
+  change,
+}: {
+  cafe: RankedCafe;
+  now: number;
+  party: Party;
+  change?: Change;
+}) {
+  const place = cafe.distance !== null ? formatDistance(cafe.distance) : cafe.area;
+  const directions = (
+    <a
+      className="button-icon-circular"
+      href={`https://www.google.com/maps/dir/?api=1&destination=${cafe.lat},${cafe.lng}`}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`Petunjuk arah ke ${cafe.name}`}
+    >
+      <span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 13 13 3M6 3h7v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+    </a>
+  );
+
+  if (!cafe.open) {
+    return (
+      <li className="occupancy-row" data-id={cafe.id} data-closed="true">
+        <span className="seat-count" aria-hidden="true">
+          –
+        </span>
+        <div>
+          <div className="cafe-name">
+            <Link href={`/kafe/${cafe.id}`} className="cafe-link">
+            {cafe.name}
+          </Link>
+          </div>
+          <div className="cafe-meta">
+            <span>{place}</span>
+            <span>Tutup</span>
+            <span>buka {formatClock(cafe.opensMin)}</span>
+          </div>
+        </div>
+        {directions}
+      </li>
+    );
+  }
+
+  // A change is told as the event that happened ("+1 meja kosong", "1 meja terisi"), so the reader
+  // never has to subtract an old count from the new one.
+  const delta = change ? cafe.freeTables - change.was : 0;
+  const marked = change !== undefined && delta !== 0 && now - change.at < CHANGE_MARK_MS;
+  const age = formatAge(cafe.confirmedAt, now);
 
   return (
-    <li
-      className="occupancy-row"
-      data-id={cafe.id}
-      data-changed={marked}
-      data-dim={state === "full" || cafe.stale}
-    >
+    <li className="occupancy-row" data-id={cafe.id} data-changed={marked} data-dim={cafe.freeTables === 0}>
       <span className="seat-count">
-        {cafe.freeSeats}
+        {cafe.freeTables}
         <small>
           <span aria-hidden="true">/</span>
-          <span className="sr-only"> of </span>
-          {cafe.totalSeats}
-          <span className="sr-only"> seats free</span>
+          <span className="sr-only"> dari </span>
+          {cafe.totalTables}
+          <span className="sr-only"> meja kosong</span>
         </small>
       </span>
       <div>
         <div className="cafe-name">
-          <span className="status-dot" data-level={cafe.stale ? "unknown" : state} />
-          <span className="sr-only">{cafe.stale ? "Not confirmed recently" : LEVEL_LABEL[state]}.</span>
-          <span>{cafe.name}</span>
+          <Link href={`/kafe/${cafe.id}`} className="cafe-link">
+            {cafe.name}
+          </Link>
         </div>
         <div className="cafe-meta">
-          {cafe.distance !== null ? `${formatDistance(cafe.distance)} · ` : `${cafe.area} · `}
+          <span>{place}</span>
           {marked ? (
+            // For the 30 seconds a change is marked, the event stands alone beside the place.
             <strong>
-              {age}, was {change.was}
+              {delta > 0 ? `+${delta} meja kosong` : `${-delta} meja terisi`}
             </strong>
-          ) : cafe.stale ? (
-            `${age} · may be old`
           ) : (
-            age
+            <>
+              {cafe.freeTables === 0 ? (
+                <span>Penuh</span>
+              ) : party === "all" ? (
+                <span>
+                  <span aria-hidden="true">±</span>
+                  <span className="sr-only">kira-kira </span>
+                  {cafe.freeSeats} kursi
+                </span>
+              ) : (
+                <span>{cafe.fits} meja cocok</span>
+              )}
+              <span>{age}</span>
+            </>
           )}
         </div>
       </div>
-      <a
-        className="button-icon-circular"
-        href={`https://www.google.com/maps/dir/?api=1&destination=${cafe.lat},${cafe.lng}`}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={`Directions to ${cafe.name}`}
-      >
-        <span>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M3 13 13 3M6 3h7v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </span>
-      </a>
+      {directions}
     </li>
   );
 }

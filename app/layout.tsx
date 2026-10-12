@@ -13,7 +13,7 @@ const calSans = localFont({
 
 export const metadata: Metadata = {
   title: "where2go",
-  description: "Live seat counts for nearby cafes, reported by the cafes themselves.",
+  description: "Jumlah kursi kosong di kafe terdekat, dilaporkan langsung oleh kafenya.",
 };
 
 export const viewport: Viewport = {
@@ -24,13 +24,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${calSans.variable}`}>
+    <html lang="id" className={`${inter.variable} ${calSans.variable}`}>
       <body>
         {children}
         <footer className="footer">
           <div className="footer-inner">
             <span className="wordmark">where2go</span>
-            <p>Demo data. The cafes listed here are fictional and their seat counts are for testing.</p>
+            <p>Data demo. Kafe di sini fiktif dan status mejanya disimulasikan.</p>
           </div>
         </footer>
       </body>

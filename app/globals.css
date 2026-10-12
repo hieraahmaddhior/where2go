@@ -14,8 +14,6 @@
   --color-on-primary: #ffffff;
   --color-on-dark: #ffffff;
   --color-on-dark-soft: #a1a1aa;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
   --color-error: #ef4444;
   --color-error-text: #b91c1c;
 
@@ -299,6 +297,15 @@ input {
   text-align: right;
 }
 
+.finder-bar + .finder-bar {
+  margin-top: var(--space-xs);
+}
+
+.filter-label {
+  font: 500 0.875rem/1.4 var(--font-ui);
+  color: var(--color-body);
+}
+
 .notice {
   margin-top: var(--space-sm);
   color: var(--color-body);
@@ -312,14 +319,21 @@ input {
 .board-head,
 .occupancy-row {
   display: grid;
-  grid-template-columns: 76px minmax(0, 1fr) auto;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
   column-gap: var(--space-sm);
   align-items: center;
   padding-inline: var(--space-md);
   border-top: 1px solid var(--color-hairline);
 }
 
+.board-head-count {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xxs);
+}
+
 .board-head {
+  white-space: nowrap;
   padding-block: var(--space-xs);
   background: var(--color-surface-soft);
   color: var(--color-muted);
@@ -327,6 +341,7 @@ input {
 }
 
 .occupancy-row {
+  position: relative;
   padding-block: var(--space-xs);
   min-height: 64px;
   background: var(--color-canvas);
@@ -362,48 +377,65 @@ input {
   color: var(--color-muted);
 }
 
-.occupancy-row[data-dim="true"] .seat-count {
+.occupancy-row[data-dim="true"] .seat-count,
+.occupancy-row[data-closed="true"] .seat-count,
+.occupancy-row[data-closed="true"] .cafe-name {
   color: var(--color-muted);
 }
 
 .cafe-name {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
   font: 600 1rem/1.4 var(--font-ui);
-}
-
-.cafe-name span:last-child {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.status-dot {
-  flex: none;
-  width: 10px;
-  height: 10px;
-  border-radius: var(--rounded-pill);
-  background: var(--color-error);
+/* The cafe name is the link; its hit area is the whole row, under the directions button. */
+.cafe-link {
+  text-decoration: none;
 }
 
-.status-dot[data-level="roomy"] {
-  background: var(--color-success);
+.cafe-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 
-.status-dot[data-level="filling"] {
-  background: var(--color-warning);
+.cafe-link:focus-visible {
+  outline: none;
 }
 
-.status-dot[data-level="unknown"] {
-  background: transparent;
-  border: 2px solid var(--color-muted);
+.cafe-link:focus-visible::after {
+  outline: 2px solid var(--color-ink);
+  outline-offset: -2px;
+}
+
+.occupancy-row:active:has(.cafe-link:active) {
+  background: var(--color-surface-soft);
+}
+
+.occupancy-row .button-icon-circular {
+  position: relative;
 }
 
 .cafe-meta {
+  display: flex;
+  flex-wrap: wrap;
   color: var(--color-muted);
   font-size: 0.8125rem;
   line-height: 1.4;
+}
+
+/* Each fact stays whole; a long line breaks between facts, never inside one. */
+.cafe-meta > * {
+  white-space: nowrap;
+}
+
+.cafe-meta > *:not(:last-child)::after {
+  content: "·";
+  margin-inline: 0.3em;
+  font-weight: 400;
+  color: var(--color-muted);
 }
 
 .cafe-meta strong {
@@ -424,6 +456,211 @@ input {
 
 .empty-state .button {
   margin-top: var(--space-md);
+}
+
+/* cafe detail */
+.detail {
+  padding: var(--space-md) var(--space-md) 0;
+}
+
+.detail h1 {
+  font: 600 1.75rem/1.2 var(--font-display);
+  letter-spacing: -0.5px;
+  text-wrap: balance;
+}
+
+.detail-sub {
+  margin-top: var(--space-xxs);
+  color: var(--color-body);
+}
+
+.detail-actions {
+  margin-top: var(--space-md);
+}
+
+.detail-section {
+  margin-top: var(--space-xl);
+}
+
+.detail-section > h2 {
+  margin-bottom: var(--space-sm);
+  font: 600 1.125rem/1.4 var(--font-ui);
+}
+
+.detail-count {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 10px;
+  color: var(--color-body);
+}
+
+.detail-count strong {
+  font: 600 4rem/1.05 var(--font-display);
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+}
+
+.detail-note {
+  margin-top: var(--space-xxs);
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+/* fact-list: label left, value right, hairline between rows. */
+.fact-list {
+  margin: var(--space-md) 0 0;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.fact-list > div {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--space-sm);
+  padding-block: var(--space-sm);
+  border-top: 1px solid var(--color-hairline);
+}
+
+.fact-list dt {
+  color: var(--color-body);
+  font-size: 0.875rem;
+}
+
+/* Icons share one slot width so labels line up whatever the table size. */
+.fact-with-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.fact-with-icon .table-icon {
+  width: 28px;
+  color: var(--color-ink);
+}
+
+.fact-list dd {
+  margin: 0;
+  font: 500 0.875rem/1.5 var(--font-ui);
+  text-align: right;
+}
+
+.fact-list dd[data-dim="true"] {
+  color: var(--color-muted);
+}
+
+.breakdown-switch {
+  display: flex;
+  margin-top: var(--space-lg);
+}
+
+.breakdown-switch + .fact-list {
+  margin-top: var(--space-sm);
+}
+
+/* zone: one accordion row per floor or terrace. Closed it shows the free-table total;
+   open it shows that zone's floor plan and its tables by size. */
+.zone-list {
+  margin-top: var(--space-sm);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.zone {
+  border-top: 1px solid var(--color-hairline);
+}
+
+.zone summary {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  list-style: none;
+  touch-action: manipulation;
+}
+
+.zone summary::-webkit-details-marker {
+  display: none;
+}
+
+.zone summary:active {
+  background: var(--color-surface-soft);
+}
+
+.zone-name {
+  flex: 1;
+  font: 600 1rem/1.4 var(--font-ui);
+}
+
+.zone-count {
+  font: 500 0.875rem/1.4 var(--font-ui);
+}
+
+.zone-count[data-dim="true"] {
+  color: var(--color-muted);
+}
+
+.zone[open] .zone-count {
+  display: none;
+}
+
+.zone-chevron {
+  flex: none;
+  transition: rotate 200ms var(--ease-out);
+}
+
+.zone[open] .zone-chevron {
+  rotate: 180deg;
+}
+
+.zone-body {
+  padding-bottom: var(--space-md);
+}
+
+.zone-body .fact-list {
+  margin-top: var(--space-sm);
+  border-bottom: 0;
+}
+
+.plain-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-xs) var(--space-lg);
+  color: var(--color-body);
+}
+
+/* placeholder: reserved space for content that does not exist yet, said in words. */
+.placeholder {
+  display: grid;
+  place-items: center;
+  padding: var(--space-md);
+  border: 1px dashed var(--color-muted);
+  border-radius: var(--rounded-lg);
+  background: var(--color-surface-soft);
+  color: var(--color-body);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.placeholder-plan {
+  min-height: 140px;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-xs);
+}
+
+.photo-grid .placeholder {
+  aspect-ratio: 4 / 3;
+}
+
+.photo-front {
+  aspect-ratio: 16 / 9;
+  margin-bottom: var(--space-md);
 }
 
 /* merchant */
@@ -494,49 +731,100 @@ body:has(.narrow) {
 }
 
 .seat-panel-status {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
   margin-top: var(--space-xs);
   color: var(--color-body);
   font-size: 0.875rem;
   min-height: 20px;
 }
 
-.stepper {
+/* table-tile: one tap per real event. Free reads as open canvas, taken as filled ink. */
+.table-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-sm);
-  margin-top: var(--space-lg);
+  grid-template-columns: repeat(auto-fill, minmax(124px, 1fr));
+  gap: var(--space-xs);
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-.stepper .button {
-  height: 72px;
-  padding: 0 var(--space-sm);
-  font-size: 1rem;
+.table-tile {
+  width: 100%;
+  min-height: 64px;
+  padding: var(--space-sm);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--rounded-md);
+  background: var(--color-canvas);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2px var(--space-xs);
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.table-tile:active {
+  background: var(--color-surface-soft);
+}
+
+.table-tile-name {
+  font: 600 0.875rem/1.4 var(--font-ui);
+}
+
+.table-tile-meta {
+  grid-column: 1 / -1;
+  font: 500 0.8125rem/1.4 var(--font-ui);
+  color: var(--color-muted);
+}
+
+.table-icon {
+  flex: none;
+  display: block;
+}
+
+.table-tile[aria-pressed="true"] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.table-tile[aria-pressed="true"]:active {
+  background: var(--color-primary-active);
+}
+
+.table-tile[aria-pressed="true"] .table-tile-meta {
+  color: var(--color-on-dark-soft);
 }
 
 .quick-set {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-sm);
-  margin-top: var(--space-sm);
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
 }
 
-.exact-set {
+.quick-set .button {
+  padding: 0 var(--space-sm);
+}
+
+/* callout: a state the merchant must know about before touching anything else. */
+.callout {
   margin-top: var(--space-lg);
+  padding: var(--space-md);
+  border: 1px solid var(--color-ink);
+  border-radius: var(--rounded-lg);
+  color: var(--color-body);
+  font-size: 0.875rem;
 }
 
-.exact-set label {
-  display: block;
-  margin-bottom: var(--space-xs);
-  font: 600 0.875rem/1.4 var(--font-ui);
+.callout strong {
+  color: var(--color-ink);
+  font-weight: 600;
 }
 
-.exact-set div {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--space-sm);
+.callout .button {
+  width: 100%;
+  margin-top: var(--space-sm);
 }
 
 .merchant-foot {
@@ -584,13 +872,18 @@ body:has(.narrow) {
     height: 64px;
   }
 
+  .plain-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .finder-controls {
     padding-top: var(--space-md);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .occupancy-row {
+  .occupancy-row,
+  .zone-chevron {
     transition: none;
   }
 }
