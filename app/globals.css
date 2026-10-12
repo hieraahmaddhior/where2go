@@ -16,6 +16,7 @@
   --color-on-dark-soft: #a1a1aa;
   --color-error: #ef4444;
   --color-error-text: #b91c1c;
+  --color-scrim: rgba(17, 17, 17, 0.5);
 
   --font-display: var(--font-cal-sans), var(--font-inter), sans-serif;
   --font-ui: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -299,6 +300,12 @@ input {
 
 .finder-bar + .finder-bar {
   margin-top: var(--space-xs);
+}
+
+/* The question is longer than the row on a phone, so it sits above its answers there. */
+.finder-bar-filter {
+  flex-wrap: wrap;
+  row-gap: var(--space-xxs);
 }
 
 .filter-label {
@@ -730,19 +737,92 @@ body:has(.narrow) {
   color: var(--color-ink);
 }
 
+/* Tall enough for the undo link, so the tiles below never shift when it appears. */
 .seat-panel-status {
-  margin-top: var(--space-xs);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  min-height: 44px;
   color: var(--color-body);
   font-size: 0.875rem;
-  min-height: 20px;
+  position: relative;
 }
 
-/* table-tile: one tap per real event. Free reads as open canvas, taken as filled ink. */
+/* Shows how long the undo link stays: a 2px line under the status row that drains to nothing. */
+.undo-progress {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  border-radius: var(--rounded-pill);
+  background: var(--color-ink);
+  transform-origin: left;
+  animation: undo-drain linear forwards;
+}
+
+@keyframes undo-drain {
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* confirm-dialog: the one modal, reserved for an action that changes every table at once. */
+.confirm-dialog {
+  width: min(360px, calc(100vw - 2 * var(--space-md)));
+  padding: var(--space-lg);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--rounded-lg);
+  background: var(--color-canvas);
+  color: var(--color-body);
+}
+
+.confirm-dialog::backdrop {
+  background: var(--color-scrim);
+}
+
+.confirm-dialog h2 {
+  font: 600 1.125rem/1.4 var(--font-ui);
+  color: var(--color-ink);
+  text-wrap: balance;
+}
+
+.confirm-dialog p {
+  margin-top: var(--space-xs);
+  font-size: 0.875rem;
+}
+
+.confirm-dialog .quick-set {
+  margin-top: var(--space-lg);
+}
+
+/* table-tile: one tap per real event. Free is an empty slot (no fill, dashed outline) at
+   full text contrast, because it is the tile staff tap most; taken is filled ink. */
+.tile-zone {
+  margin-top: var(--space-lg);
+}
+
+.seat-panel-status + .tile-zone {
+  margin-top: var(--space-sm);
+}
+
+.tile-zone-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-sm);
+  font: 600 0.875rem/1.4 var(--font-ui);
+}
+
+.tile-zone-title span {
+  font-weight: 500;
+  color: var(--color-body);
+}
+
 .table-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(124px, 1fr));
   gap: var(--space-xs);
-  margin: var(--space-lg) 0 0;
+  margin: var(--space-xs) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -751,9 +831,9 @@ body:has(.narrow) {
   width: 100%;
   min-height: 64px;
   padding: var(--space-sm);
-  border: 1px solid var(--color-hairline);
+  border: 1px dashed var(--color-muted);
   border-radius: var(--rounded-md);
-  background: var(--color-canvas);
+  background: transparent;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
@@ -764,7 +844,7 @@ body:has(.narrow) {
 }
 
 .table-tile:active {
-  background: var(--color-surface-soft);
+  background: var(--color-hairline);
 }
 
 .table-tile-name {
@@ -774,7 +854,13 @@ body:has(.narrow) {
 .table-tile-meta {
   grid-column: 1 / -1;
   font: 500 0.8125rem/1.4 var(--font-ui);
-  color: var(--color-muted);
+  color: var(--color-body);
+}
+
+/* The state word leads and carries the weight; the size follows. */
+.table-tile-meta strong {
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
 .table-icon {
@@ -784,7 +870,11 @@ body:has(.narrow) {
 
 .table-tile[aria-pressed="true"] {
   background: var(--color-primary);
-  border-color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.table-tile[aria-pressed="true"] .table-tile-meta strong {
   color: var(--color-on-primary);
 }
 
@@ -800,7 +890,7 @@ body:has(.narrow) {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-xs);
-  margin-top: var(--space-md);
+  margin-top: var(--space-lg);
 }
 
 .quick-set .button {
@@ -885,5 +975,10 @@ body:has(.narrow) {
   .occupancy-row,
   .zone-chevron {
     transition: none;
+  }
+
+  /* Without motion the line stays full until the link goes away. */
+  .undo-progress {
+    animation: none;
   }
 }

@@ -4,9 +4,19 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { TableIcon } from "@/components/TableIcon";
 import type { MerchantCafe } from "@/lib/cafes";
-import { formatAge, formatClock, freeSeats, isOpen, isStale, level, LEVEL_LABEL } from "@/lib/occupancy";
+import {
+  formatAge,
+  formatClock,
+  freeSeats,
+  groupTables,
+  isOpen,
+  isStale,
+  level,
+  LEVEL_LABEL,
+} from "@/lib/occupancy";
 
 const SYNC_MS = 10000;
+const UNDO_MS = 6000;
 
 type Status = "saved" | "saving" | "failed";
 type Change = { tableId: number; free: boolean } | { all: boolean } | { confirm: true };
@@ -25,6 +35,43 @@ export function SeatUpdater({ initialCafe, initialNow }: { initialCafe: Merchant
   const [now, setNow] = useState(initialNow);
   const [status, setStatus] = useState<Status>("saved");
   const pending = useRef(0);
+  // A tile tap saves at once, so a mis-tap needs a way back: the last tap can be undone for a few seconds.
+  const [undo, setUndo] = useState<{ label: number; free: boolean; tableId: number; at: number } | null>(null);
+  // Bulk actions change every table at once, so they alone ask before saving.
+  const [confirming, setConfirming] = useState<"full" | "free" | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (confirming && !dialog.open) dialog.showModal();
+    if (!confirming && dialog.open) dialog.close();
+  }, [confirming]);
+
+  useEffect(() => {
+    if (!undo) return;
+    const timer = setTimeout(() => setUndo(null), UNDO_MS);
+    return () => clearTimeout(timer);
+  }, [undo]);
+
+  function tapTable(table: { id: number; label: number; free: boolean }) {
+    setConfirming(null);
+    setUndo({ tableId: table.id, label: table.label, free: !table.free, at: Date.now() });
+    change({ tableId: table.id, free: !table.free });
+  }
+
+  function undoTap() {
+    if (!undo) return;
+    change({ tableId: undo.tableId, free: !undo.free });
+    setUndo(null);
+  }
+
+  function confirmBulk() {
+    if (!confirming) return;
+    setUndo(null);
+    change({ all: confirming === "free" });
+    setConfirming(null);
+  }
 
   // Another device at the same counter may be updating too.
   useEffect(() => {
@@ -116,6 +163,17 @@ export function SeatUpdater({ initialCafe, initialNow }: { initialCafe: Merchant
         <p className="seat-panel-status" role="status">
           {status === "failed" ? (
             <span className="notice-error">Perubahan itu gagal disimpan. Periksa koneksi lalu ketuk lagi.</span>
+          ) : undo ? (
+            <>
+              <span>
+                Meja {undo.label} ditandai {undo.free ? "kosong" : "terisi"}.
+              </span>
+              <button className="button-text-link" onClick={undoTap}>
+                Urungkan
+              </button>
+              {/* Drains over the undo window; keyed so a new tap restarts it. */}
+              <span className="undo-progress" key={undo.at} style={{ animationDuration: `${UNDO_MS}ms` }} />
+            </>
           ) : (
             <>
               {LEVEL_LABEL[state]} · {freeTables > 0 && `±${freeSeats(cafe)} kursi · `}
@@ -124,40 +182,79 @@ export function SeatUpdater({ initialCafe, initialNow }: { initialCafe: Merchant
           )}
         </p>
 
-        <ul className="table-grid" aria-label="Meja">
-          {cafe.tables.map((table) => (
-            <li key={table.id}>
-              <button
-                className="table-tile"
-                aria-pressed={!table.free}
-                onClick={() => change({ tableId: table.id, free: !table.free })}
-              >
-                <span className="table-tile-name">Meja {table.label}</span>
-                <TableIcon seats={table.size} />
-                <span className="table-tile-meta">
-                  {table.size} kursi · {table.free ? "Kosong" : "Terisi"}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
+        {groupTables(cafe.tables, "zone").map((zone) => (
+          // Tiles sit under the floor or terrace they are on, the way staff walk the room.
+          <section className="tile-zone" key={zone.key} aria-labelledby={`zone-${zone.key}`}>
+            <h2 className="tile-zone-title" id={`zone-${zone.key}`}>
+              {zone.key}
+              <span>
+                {zone.freeSizes.length === 0
+                  ? "Penuh"
+                  : zone.freeSizes.length === zone.total
+                    ? `${zone.total} kosong`
+                    : `${zone.freeSizes.length} kosong · ${zone.total - zone.freeSizes.length} terisi`}
+              </span>
+            </h2>
+            <ul className="table-grid">
+              {cafe.tables
+                .filter((table) => table.zone === zone.key)
+                .map((table) => (
+                  <li key={table.id}>
+                    <button
+                      className="table-tile"
+                      aria-pressed={!table.free}
+                      onClick={() => tapTable(table)}
+                    >
+                      <span className="table-tile-name">Meja {table.label}</span>
+                      <TableIcon seats={table.size} />
+                      <span className="table-tile-meta">
+                        <strong>{table.free ? "Kosong" : "Terisi"}</strong> · {table.size} kursi
+                      </span>
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          </section>
+        ))}
 
         <div className="quick-set">
           <button
             className="button button-secondary"
-            onClick={() => change({ all: false })}
+            onClick={() => setConfirming("full")}
             disabled={freeTables === 0}
           >
             Tandai penuh
           </button>
           <button
             className="button button-secondary"
-            onClick={() => change({ all: true })}
+            onClick={() => setConfirming("free")}
             disabled={freeTables === cafe.tables.length}
           >
             Tandai semua kosong
           </button>
         </div>
+
+        {/* Native dialog: focus is trapped, Escape and the backdrop close it, and closing cancels. */}
+        <dialog
+          className="confirm-dialog"
+          ref={dialogRef}
+          aria-labelledby="confirm-title"
+          onClose={() => setConfirming(null)}
+          onClick={(event) => event.target === dialogRef.current && setConfirming(null)}
+        >
+          <h2 id="confirm-title">
+            Tandai semua {cafe.tables.length} meja {confirming === "free" ? "kosong" : "terisi"}?
+          </h2>
+          <p>Pelanggan langsung melihat kafe ini {confirming === "free" ? "kosong semua" : "penuh"}.</p>
+          <div className="quick-set">
+            <button className="button button-secondary" onClick={() => setConfirming(null)}>
+              Batal
+            </button>
+            <button className="button button-primary" onClick={confirmBulk}>
+              {confirming === "free" ? "Ya, semua kosong" : "Ya, tandai penuh"}
+            </button>
+          </div>
+        </dialog>
       </section>
 
       <div className="merchant-foot">

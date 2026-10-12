@@ -44,7 +44,8 @@ Confirmed:
 - **Stale counts are hidden.** An open cafe whose tables nobody has changed or confirmed in 30 minutes is left off the board. Its merchant screen says so and offers "Masih benar" to confirm an unchanged layout; that or any table tap brings the cafe back.
 - **Opening hours.** Each cafe has seeded opening hours. A closed cafe is shown below all open ones as "Tutup · buka HH.MM" with no count.
 - **Merchant access** is a cafe code: enter it, land on that cafe's tables. No user accounts. Codes are random and generated at seed time.
-- **Merchant bulk actions.** "Tandai penuh" and "Tandai semua kosong".
+- **Merchant saves are instant, with a way back.** A table tap is saved immediately, with no separate "update" button: an unsaved draft that looks saved on the staff screen is the worst failure this product can have. The last tap can be undone for a few seconds.
+- **Merchant bulk actions.** "Tandai penuh" and "Tandai semua kosong" ask for confirmation first, because one tap changes every table.
 - **Search** by cafe name or area; **no map**.
 - **Cafe detail page** (`/kafe/<id>`), opened by tapping a row. In order: name, open status ("Buka sampai 02.00", "Tutup 45 mnt lagi", "Tutup · buka 07.00"), distance or area, directions; free tables now, broken down by table size and by zone (floor, terrace), with when staff last confirmed; facilities; house rules (time limits, minimum order, laptops); how to find it (address and a landmark); opening hours and the price drinks start from. The breakdown switches between "by table size" and "by zone"; by zone is an accordion that shows each zone's free-table total when closed and its floor plan and sizes when open. Photos (storefront, each zone) and each zone's floor plan have reserved, labeled placeholders and no content yet.
 - **Zones.** Every table belongs to a zone of its cafe ("Lantai 1", "Teras").

@@ -142,9 +142,9 @@ export function Finder({ initialCafes, initialNow }: { initialCafes: Cafe[]; ini
             </button>
           )}
         </div>
-        <div className="finder-bar">
+        <div className="finder-bar finder-bar-filter">
           <span className="filter-label" id="party-label">
-            Jumlah orang
+            Butuh buat berapa orang?
           </span>
           <div className="nav-pill-group" role="group" aria-labelledby="party-label">
             {PARTIES.map((option) => (
