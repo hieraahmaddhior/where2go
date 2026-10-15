@@ -114,6 +114,11 @@ export function CafeDetail({ initialCafe, initialNow }: { initialCafe: Detail; i
         </a>
       </div>
 
+      <p className="demo-note">
+        Demo: status meja di halaman ini disimulasikan, dan fasilitas, aturan, serta harga adalah contoh, bukan data
+        dari kafe ini.
+      </p>
+
       <section className="detail-section" aria-labelledby="tables-title">
         <h2 id="tables-title">Meja kosong sekarang</h2>
         {live ? (
@@ -202,7 +207,7 @@ export function CafeDetail({ initialCafe, initialNow }: { initialCafe: Detail; i
           <p>Foto tampak depan belum tersedia.</p>
         </div>
         <p>{cafe.address}</p>
-        <p className="detail-note">{cafe.landmark}.</p>
+        {cafe.landmark && <p className="detail-note">{cafe.landmark}.</p>}
       </section>
 
       <section className="detail-section" aria-labelledby="inside-title">

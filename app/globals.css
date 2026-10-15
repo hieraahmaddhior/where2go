@@ -485,6 +485,16 @@ input {
   margin-top: var(--space-md);
 }
 
+/* demo-note: says plainly which parts of a real cafe's page are not real. */
+.demo-note {
+  margin-top: var(--space-lg);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-ink);
+  border-radius: var(--rounded-md);
+  color: var(--color-ink);
+  font-size: 0.875rem;
+}
+
 .detail-section {
   margin-top: var(--space-xl);
 }

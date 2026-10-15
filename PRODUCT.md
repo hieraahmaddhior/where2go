@@ -52,10 +52,10 @@ Confirmed:
 
 Demo behavior (labeled as demo in the interface):
 
-- Table layouts, zones, hours, addresses, landmarks, prices, facilities, and rules are all invented and seeded; there is no setup screen for merchants yet. Demo cafes are open 07.00–02.00 WIB so a late session still has open cafes.
-- Demo cafes carry a heartbeat so they never go stale, except one that starts hidden to demonstrate hidden → confirmed.
+- Table layouts, zones, prices, facilities, rules, and some hours are invented and seeded on top of real cafe names, addresses, and coordinates; there is no setup screen for merchants yet.
+- Demo cafes carry a heartbeat so they never go stale, except one (Kala Liyangan Coffee) that starts hidden to demonstrate hidden → confirmed. Closed cafes appear naturally from real opening hours.
 - A simulator seats or clears one table roughly every 15 seconds while someone is watching the board. It leaves alone closed cafes and any cafe a person touched in the last 10 minutes.
-- Demo cafes are planted around Bandung (Dago, Braga, Cihampelas) by default.
+- Demo cafes sit at their real coordinates in Gejayan / Condongcatur, Yogyakarta.
 
 Known tension, accepted: a stale cafe disappears at minute 31 while closed cafes stay listed.
 
@@ -66,11 +66,56 @@ Undecided or deferred:
 - Real photos and a visual floor plan per zone. Hourly busy pattern, which needs history from a pilot.
 - Shared seating (bar, communal tables) counted per seat, so solo guests are steered away from 4-seat tables. Discussed, not built.
 - Real merchant accounts, cafe self-registration, a durable login limiter.
-- Real cafe data and launch city.
+- Real table, facility, rule, and price data from the cafes themselves, and their consent to be listed.
 
 ## Evidence on Hand
 
-No real cafe data, merchants, customers, or usage numbers exist. Every cafe is fictional, including its address, landmark, prices, facilities, and rules, and its table activity is simulated; the interface must keep saying so. Addresses use real street names with invented numbers; they do not point at real businesses. Do not present them as real businesses or invent testimonials, user counts, or partner claims.
+The demo cafes are real businesses around 99 Coffee Roaster on Jl. Affandi (Gejayan), Yogyakarta, chosen by the user to replace the earlier fictional set.
+
+- **Real** (Google Maps, read 2026-10-13): each cafe's name, address, coordinates, and the opening or closing times marked "listed" in `lib/seed.ts`.
+- **Invented**: table layouts and zones, facilities, house rules, prices, the hours marked "assumed", and all table activity (simulated). None of it came from the cafes, and none of the cafes has been contacted or has agreed to be listed.
+- No landmark is shown: an invented landmark for a real place could misdirect someone.
+
+Because of this the interface must keep stating, on the board's footer and on every cafe page, that table status is simulated and that facilities, rules, and prices are examples. Do not remove or soften that note, and do not add testimonials, user counts, partner claims, or anything implying a cafe takes part, until a cafe supplies its own data.
+
+## Pending Plan
+
+Discussed on 2026-10-13, not decided and not built. Nothing here has been validated with a cafe owner or a cafe-goer. Market research behind it: `reports/Fitur meja POS Indonesia.md` (mostly vendor marketing pages; "not found" there means not on the pages read).
+
+**The open problem.** A consistently full cafe gains little from announcing that it is full, and its staff carry the cost of tapping. The cafes that gain are half-empty, new, or hard-to-find ones, cafes with quiet hours, and neighbours of a popular cafe.
+
+**What the market already has.** Table management, QR order at the table, and reservations are standard in Indonesian POS products (Moka, majoo, Pawoon, Olsera, ESB, Runchise); Runchise also has a digital waitlist. All of it is staff-side. No product found shows live free tables to the public, and none sees more than its own clients.
+
+**Direction.** The customer side is the product; the merchant screen is a data-entry tool and stays minimal. Do not compete with POS on merchant features (no QR order, no reservations, no waitlist race). The selling point to merchants is demand seen before it becomes a transaction, across cafes: a POS knows who bought, where2go knows who is looking.
+
+**Proposed order.**
+
+1. Log demand from now, with no identity and no interface: each search (party size, filters, hour, coarse area, whether anything matched) and each view of a cafe page while it is full. This data only exists from the day it is logged.
+2. Customer features that work on day one:
+   - Search by need: party size, power outlet, long stays allowed, open late, combined with free tables now.
+   - Per-table attributes (power outlet, indoor or terrace, smoking), as an extension of zones.
+   - Overflow: a full cafe's page points to the nearest cafe with a fitting table, both ways.
+3. Fewer taps for staff: the merchant screen asks only when needed ("table 4 taken for 3 hours, still taken?").
+4. "Tell me when a table frees up" for a cafe and party size. Web push on iPhone needs the site added to the home screen; WhatsApp is the paid alternative.
+5. A share link for group chats that shows the live count when opened.
+6. After some weeks of tap history: whether a table is likely still free on arrival (in words, never a percentage), sitting time per table size, consistent quiet hours.
+7. After real user volume: one sentence a week to the merchant, not a dashboard ("Thursday 19–21: 14 people looked for a table for 4+, you were full"), covering lost demand, table-mix advice, and searches after closing time. Quiet-hour offers to people searching nearby are the closest to revenue and the heaviest to build.
+
+**Not doing.** A recommendation chatbot, chart dashboards, percentage predictions on thin data, points or badges, colour-coded busyness.
+
+**Automation, deferred.**
+
+- POS integration is not a product direction. Only Moka's public API exposes open bills with a table (`sync_bills`), untested and with an undocumented quota, and it is only correct where guests pay at the end. In pay-first cafes the bill closes as the guest sits down.
+- Cameras (existing CCTV, person detection on a device inside the cafe, only counts leave the building) are the one automation that works in pay-first cafes, and would add people per table, sitting time, and walk-aways at the door. Phase 2 at the earliest. It would propose a state that staff can still correct, the stale rule still applies, and no image is ever shown. Blocked on: accuracy at real camera angles, an owner willing to give camera access, and a legal check against UU PDP 27/2022 on visual data in public places.
+- Table sensors (mmWave) are deferred.
+
+**Open question.** Letting cafe-goers on site confirm or correct a count would bring in cafes whose staff do not take part, and would break the positioning above ("reported by the cafe itself") and principle 1. Undecided.
+
+**Checks before building.**
+
+- Ask 3–5 cafe owners near Gejayan: pay-first or table service, which POS, how they handle waiting guests, how many people leave per night.
+- Ask 5–10 students what made their last search for a cafe to work in fail.
+- Look at the Grab and Chope apps and the app stores for a local competitor the research missed.
 
 ## Product Principles
 

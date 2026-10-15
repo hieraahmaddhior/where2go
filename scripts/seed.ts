@@ -1,6 +1,5 @@
 // Resets the local database to the demo cafes and writes fresh cafe codes to
-// data/demo-codes.txt. Plant the cafes near you with
-// SEED_LAT=<lat> SEED_LNG=<lng> npm run seed
+// data/demo-codes.txt.
 import { db, seed } from "../lib/db.ts";
 
 async function main() {

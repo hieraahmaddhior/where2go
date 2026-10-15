@@ -15,21 +15,17 @@ Open http://localhost:3000 for the finder (tap a cafe for its detail page) and h
 
 The SQLite database is created at `data/where2go.db` on first request and seeded with fictional demo cafes. Cafe codes are random per seed and written to `data/demo-codes.txt` (gitignored).
 
-## Demo data near you
+## Demo data
 
-Demo cafes are planted around a default point. To plant them around your own location:
+The demo uses real cafes around 99 Coffee Roaster on Jl. Affandi (Gejayan), Yogyakarta. Names, addresses, coordinates, and some opening hours are real (read from Google Maps on 2026-10-13). Table layouts, facilities, rules, prices, the remaining hours, and all table activity are invented; `lib/seed.ts` marks which is which, and the interface says so on every page.
 
-```bash
-SEED_LAT=<latitude> SEED_LNG=<longitude> npm run seed
-```
-
-`npm run seed` always resets the database to the demo cafes and generates new codes.
+`npm run seed` resets the database to these cafes and generates new codes.
 
 ## Demo behavior
 
-- While the finder is open, a simulator seats or clears one table about every 15 seconds. It skips closed cafes and any cafe changed by hand in the last 10 minutes.
-- One demo cafe is seeded closed (opens two hours after seeding). One starts hidden: open its staff screen and tap "Masih benar" to put it on the board.
-- Demo cafes are open 07.00–02.00 WIB; outside those hours the board shows them as closed.
+- While the finder or a cafe page is open, a simulator seats or clears one table about every 15 seconds. It skips closed cafes and any cafe changed by hand in the last 10 minutes.
+- One cafe (Kala Liyangan Coffee) starts hidden: open its staff screen and tap "Masih benar" to put it on the board.
+- Each cafe follows its own opening hours in WIB; outside them the board shows it as closed.
 
 ## Checks
 
@@ -42,6 +38,6 @@ npm run typecheck
 
 - Cafe codes are the only merchant credential. Code guessing is slowed by an in-memory, per-process limiter; this is not production-grade auth.
 - The finder polls every 5 seconds; there is no push channel.
-- Table layouts, zones, opening hours, addresses, prices, facilities, and rules are invented and seeded; there is no setup screen.
+- Table layouts, zones, prices, facilities, rules, and some opening hours are invented and seeded; there is no setup screen.
 - Cafe photos and floor plans are placeholders.
-- All cafes are fictional and their table activity is simulated.
+- The cafes are real places, but nothing about their tables, facilities, rules, or prices came from them.

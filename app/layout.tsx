@@ -30,7 +30,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="footer">
           <div className="footer-inner">
             <span className="wordmark">where2go</span>
-            <p>Data demo. Kafe di sini fiktif dan status mejanya disimulasikan.</p>
+            <p>
+              Demo. Nama dan alamat kafe asli, tetapi status meja disimulasikan dan fasilitas, aturan, harga, serta
+              sebagian jam buka adalah contoh, bukan data dari kafe.
+            </p>
           </div>
         </footer>
       </body>
